@@ -1,7 +1,7 @@
-import { setToken } from '@/utils/auth'
+import { setToken, getToken } from '@/utils/auth'
 // 状态
 const state = {
-  token: ''
+  token: getToken()
 }
 // 修改状态
 const mutations = {
