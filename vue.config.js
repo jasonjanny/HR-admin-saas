@@ -35,6 +35,15 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    // 在这个地方配置开发服务器的代理
+    // 帮转发请求到java数据服务器
+    proxy: {
+      // 这里以 key: value 的形式标明了数据请求来源标识和要转发的目标
+      '/api': {
+        target: 'http://ihrm-java.itheima.net',
+        changeOrigin: true
+      }
     }
   },
   configureWebpack: {
