@@ -122,6 +122,13 @@ export default {
     handleLogin() {
       login(this.loginForm).then(res => {
         console.log(res.data)
+        const { data, message, success } = res.data
+        // 弹窗
+        if (success) {
+          this.$message.success(message)
+        }
+        // 获取数据之后
+        this.$store.commit('user/setToken', data)
       })
       /* this.$refs.loginForm.validate((valid) => {
         if (valid) {
