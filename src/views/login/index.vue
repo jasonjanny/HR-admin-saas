@@ -69,7 +69,6 @@
 
 <script>
 import { validMobile, validPassword } from '@/utils/validate'
-import { login } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -120,16 +119,7 @@ export default {
       })
     },
     handleLogin() {
-      login(this.loginForm).then(res => {
-        console.log(res.data)
-        const { data, message, success } = res.data
-        // 弹窗
-        if (success) {
-          this.$message.success(message)
-        }
-        // 获取数据之后
-        this.$store.commit('user/setToken', data)
-      })
+      this.$store.dispatch('user/login', this.loginForm)
       /* this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true

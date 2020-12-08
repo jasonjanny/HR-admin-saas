@@ -1,4 +1,6 @@
+import { login } from '@/api/user'
 import { setToken, getToken } from '@/utils/auth'
+import { Message } from 'element-ui'
 // 状态
 const state = {
   token: getToken()
@@ -13,7 +15,18 @@ const mutations = {
   }
 }
 // 执行异步
-const actions = {}
+const actions = {
+  async login(context, data) {
+    const res = await login(data)
+    const { message, success } = res.data
+    if (success) {
+      // 弹窗
+      Message.success(message)
+      // 调用 mutations
+      context.commit('setToken', data)
+    }
+  }
+}
 export default {
   namespaced: true,
   state,
