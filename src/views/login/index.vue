@@ -57,7 +57,7 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-      >Login</el-button>
+      >登录</el-button>
 
       <div class="tips">
         <span style="margin-right: 20px">账号: 13800000002</span>
@@ -68,36 +68,30 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+import { validMobile, validPassword } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
+    const validateMobile = (rule, value, callback) => {
+      validMobile(value) ? callback() : callback(new Error('手机号码格式不正确'))
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
+      validPassword(value) ? callback() : callback(new Error('密码必须是6-16位'))
     }
     return {
       loginForm: {
-        mobile: 'admin',
-        password: '111111'
+        mobile: '13800000002',
+        password: '123456'
       },
       loginRules: {
         mobile: [
-          { required: true, trigger: 'blur', validator: validateUsername }
+          { required: true, trigger: 'blur', message: '手机号码不能为空' },
+          { trigger: 'blur', validator: validateMobile }
         ],
         password: [
-          { required: true, trigger: 'blur', validator: validatePassword }
+          { required: true, trigger: 'blur', message: '密码不能为空' },
+          { trigger: 'blur', validator: validatePassword }
         ]
       },
       loading: false,
