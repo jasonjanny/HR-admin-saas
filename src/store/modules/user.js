@@ -1,9 +1,9 @@
-import { login } from '@/api/user'
+import { login, getUserInfo } from '@/api/user'
 import { setToken, getToken } from '@/utils/auth'
-import { Message } from 'element-ui'
 // 状态
 const state = {
-  token: getToken()
+  token: getToken(),
+  userInfo: {}
 }
 // 修改状态
 const mutations = {
@@ -12,16 +12,21 @@ const mutations = {
     state.token = data
     // 将token存储到cookie中，数据化持久
     setToken(data)
+  },
+  getUserInfo(state, data) {
+    state.userInfo = data
   }
 }
 // 执行异步
 const actions = {
   async login(context, data) {
     const res = await login(data)
-    if (res) {
-      // 调用 mutations
-      context.commit('setToken', data)
-    }
+    // 调用 mutations
+    context.commit('setToken', res)
+  },
+  async getUserInfo(context) {
+    const data = await getUserInfo()
+    context.commit('getUserInfo', data)
   }
 }
 export default {
