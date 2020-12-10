@@ -1,4 +1,4 @@
-import { login, getUserInfo } from '@/api/user'
+import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { setToken, getToken } from '@/utils/auth'
 // 状态
 const state = {
@@ -25,7 +25,16 @@ const actions = {
     context.commit('setToken', res)
   },
   async getUserInfo(context) {
-    const data = await getUserInfo()
+    // 获取基本信息
+    const dataUserInfo = await getUserInfo()
+    // 获取详细信息
+    const dataUserDetail = await getUserDetailById(dataUserInfo.userId)
+    // 两个信息合并
+    const data = {
+      ...dataUserInfo,
+      ...dataUserDetail
+    }
+    console.log(data)
     context.commit('getUserInfo', data)
   }
 }

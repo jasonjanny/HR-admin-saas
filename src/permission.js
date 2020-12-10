@@ -19,6 +19,7 @@ router.beforeEach((to, from, next) => {
       if (!store.getters.userId) {
         store.dispatch('user/getUserInfo')
       }
+      next()
     }
   } else {
     if (whiteList.indexOf(to.path) > -1) {
