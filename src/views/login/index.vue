@@ -118,16 +118,24 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    async handleLogin() {
       this.loading = true
-      this.$store.dispatch('user/login', this.loginForm).then(() => {
-        this.$router.push('/')
-      }).catch(err => {
+
+      try {
+        const isValid = await this.$refs.loginForm.validate()
+
+        if (isValid) {
+          await this.$store.dispatch('user/login', this.loginForm)
+          this.$router.push('/')
+        }
+      } catch (err) {
         console.log(err)
-      }).finally(() => {
+      } finally {
         this.loading = false
-      })
-      /* this.$refs.loginForm.validate((valid) => {
+      }
+    }
+
+    /* this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
           this.$store
@@ -144,7 +152,7 @@ export default {
           return false
         }
       }) */
-    }
+
   }
 }
 </script>
