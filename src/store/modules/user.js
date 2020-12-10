@@ -13,6 +13,12 @@ const mutations = {
     // 将token存储到cookie中，数据化持久
     setToken(data)
   },
+  removeToken(state) {
+    state.token = ''
+  },
+  removeUserInfo(state) {
+    state.userInfo = {}
+  },
   setUserInfo(state, data) {
     state.userInfo = data
   }
@@ -36,6 +42,10 @@ const actions = {
       ...dataUserDetail
     }
     context.commit('setUserInfo', data)
+  },
+  logout(context) {
+    context.commit('removeToken')
+    context.commit('removeUserInfo')
   }
 }
 export default {
