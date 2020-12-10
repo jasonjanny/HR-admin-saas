@@ -22,7 +22,6 @@ Vue.use(ElementUI, { locale })
 
 // 注册自定义指令
 import * as directives from '@/directives'
-console.log(directives)
 // 遍历所有导出的自定义指令对象，完成自定义全局注册
 // 得到的是一个字符串数组
 Object.keys(directives).forEach(key => {

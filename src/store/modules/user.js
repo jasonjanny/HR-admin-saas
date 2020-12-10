@@ -13,7 +13,7 @@ const mutations = {
     // 将token存储到cookie中，数据化持久
     setToken(data)
   },
-  getUserInfo(state, data) {
+  setUserInfo(state, data) {
     state.userInfo = data
   }
 }
@@ -27,6 +27,7 @@ const actions = {
   async getUserInfo(context) {
     // 获取基本信息
     const dataUserInfo = await getUserInfo()
+    console.log(dataUserInfo)
     // 获取详细信息
     const dataUserDetail = await getUserDetailById(dataUserInfo.userId)
     // 两个信息合并
@@ -34,8 +35,7 @@ const actions = {
       ...dataUserInfo,
       ...dataUserDetail
     }
-    console.log(data)
-    context.commit('getUserInfo', data)
+    context.commit('setUserInfo', data)
   }
 }
 export default {

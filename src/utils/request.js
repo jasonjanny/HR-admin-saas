@@ -26,6 +26,7 @@ service.interceptors.response.use(res => {
   // 解构数据
   const { message, success, data } = res.data
   if (success) {
+    console.log(message)
     Message.success(message)
     return data
   } else {
