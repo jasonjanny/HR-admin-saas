@@ -15,7 +15,10 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       router.push('/')
     } else {
-      next()
+      // 如果没有id这个值 才会调用 vuex的获取资料的action
+      if (!store.getters.userId) {
+        store.dispatch('user/getUserInfo')
+      }
     }
   } else {
     if (whiteList.indexOf(to.path) > -1) {
