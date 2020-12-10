@@ -18,10 +18,7 @@ const mutations = {
 const actions = {
   async login(context, data) {
     const res = await login(data)
-    const { message, success } = res.data
-    if (success) {
-      // 弹窗
-      Message.success(message)
+    if (res) {
       // 调用 mutations
       context.commit('setToken', data)
     }
