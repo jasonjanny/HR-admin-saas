@@ -1,6 +1,7 @@
 // 导出一个axios的实例  而且这个实例要有请求拦截器 响应拦截器
 import axios from 'axios'
 import { Message } from 'element-ui'
+import { store } from '@/store'
 // 创建一个axios的实例
 const service = axios.create({
   // 设置axios请求的基础的基础地址
@@ -8,7 +9,14 @@ const service = axios.create({
   // 定义5秒超时
   timeout: 5000
 })
-service.interceptors.request.use() // 请求拦截器
+// 请求拦截器
+service.interceptors.request.use(config => {
+  if (store.getters.token) {
+    config.headers.Authorization = `Bearer ${store.getters.token}`
+  }
+  return config
+})
+
 // 响应拦截器
 service.interceptors.response.use(res => {
   // 解构数据
