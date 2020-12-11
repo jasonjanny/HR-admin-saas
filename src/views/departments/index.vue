@@ -29,9 +29,33 @@
             </el-row>
           </el-col>
         </el-row>
+        <!-- 树形结构 -->
+        <el-tree :data="departs" :props="defaultProps" default-expand-all="true">
+          <el-row slot-scope="scope" type="flex" justify="space-between" align="middle" style="height: 40px;width:100%">
+            <el-col>
+              <span>{{ scope.data.name }}</span>
+            </el-col>
+            <el-col :span="4">
+              <el-row type="flex" justify="end">
+                <!-- 两个内容 -->
+                <el-col>负责人</el-col>
+                <el-col>
+                  <!-- 下拉菜单 element -->
+                  <el-dropdown>
+                    <span>
+                      操作<i class="el-icon-arrow-down" />
+                    </span>
+                    <!-- 下拉菜单 -->
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>添加子部门</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+        </el-tree>
       </el-card>
-
-      <el-tree :data="departs" :props="defaultProps" default-expand-all="true" />
     </div>
   </div>
 </template>
@@ -42,37 +66,22 @@ export default {
     return {
       departs: [
         {
-          label: 'name',
+          name: '总裁办',
           children: [
             {
-              label: 'jason',
-              children: [
-                {
-                  label: 'gender',
-                  children: [
-                    {
-                      label: 'man'
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              label: 'janny'
+              name: '董事会'
             }
           ]
         },
         {
-          label: 'age',
-          children: [
-            {
-              label: '21'
-            }
-          ]
+          name: '行政部'
+        },
+        {
+          name: '人事部'
         }
       ],
       defaultProps: {
-        label: 'label',
+        label: 'name',
         children: 'children'
       }
     }
