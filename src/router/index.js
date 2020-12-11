@@ -30,6 +30,7 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// 固定路由
 export const constantRoutes = [
   {
     path: '/login',
@@ -59,10 +60,24 @@ export const constantRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
+// 动态路由
+const asyncRoutes = [
+  {
+    path: '/departments',
+    component: Layout,
+    children: [{
+      path: '',
+      component: () => import('@/views/departments'),
+      meta: { title: '组织架构' }
+    }]
+  }
+]
+
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  // 拼接路由
+  routes: [...constantRoutes, ...asyncRoutes]
 })
 
 const router = createRouter()
