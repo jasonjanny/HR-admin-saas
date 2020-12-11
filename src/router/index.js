@@ -52,7 +52,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 
@@ -61,16 +61,25 @@ export const constantRoutes = [
 ]
 
 // 动态路由
+
+import approvals from '@/router/modules/approvals'
+import attendances from '@/router/modules/attendances'
+import departments from '@/router/modules/departments'
+import employees from '@/router/modules/employees'
+import permission from '@/router/modules/permission'
+import salarys from '@/router/modules/salarys'
+import setting from '@/router/modules/setting'
+import social from '@/router/modules/social'
+
 const asyncRoutes = [
-  {
-    path: '/departments',
-    component: Layout,
-    children: [{
-      path: '',
-      component: () => import('@/views/departments'),
-      meta: { title: '组织架构' }
-    }]
-  }
+  approvals,
+  attendances,
+  departments,
+  employees,
+  permission,
+  salarys,
+  setting,
+  social
 ]
 
 const createRouter = () => new Router({
