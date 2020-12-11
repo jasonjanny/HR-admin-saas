@@ -30,13 +30,53 @@
           </el-col>
         </el-row>
       </el-card>
+
+      <el-tree :data="departs" :props="defaultProps" default-expand-all="true" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  data() {
+    return {
+      departs: [
+        {
+          label: 'name',
+          children: [
+            {
+              label: 'jason',
+              children: [
+                {
+                  label: 'gender',
+                  children: [
+                    {
+                      label: 'man'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              label: 'janny'
+            }
+          ]
+        },
+        {
+          label: 'age',
+          children: [
+            {
+              label: '21'
+            }
+          ]
+        }
+      ],
+      defaultProps: {
+        label: 'label',
+        children: 'children'
+      }
+    }
+  }
 }
 </script>
 
