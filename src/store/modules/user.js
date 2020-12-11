@@ -1,5 +1,5 @@
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
-import { setToken, getToken } from '@/utils/auth'
+import { setToken, getToken, removeToken } from '@/utils/auth'
 // 状态
 const state = {
   token: getToken(),
@@ -15,6 +15,7 @@ const mutations = {
   },
   removeToken(state) {
     state.token = ''
+    removeToken()
   },
   removeUserInfo(state) {
     state.userInfo = {}
@@ -43,9 +44,11 @@ const actions = {
     }
     context.commit('setUserInfo', data)
   },
-  logout(context) {
-    context.commit('removeToken')
-    context.commit('removeUserInfo')
+  logout({ commit }) {
+    // 清理token
+    commit('removeToken')
+    // 清理userInfo
+    commit('removeUserInfo')
   }
 }
 export default {
