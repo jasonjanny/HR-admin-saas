@@ -61,7 +61,6 @@ export const constantRoutes = [
 ]
 
 // 动态路由
-
 import approvals from '@/router/modules/approvals'
 import attendances from '@/router/modules/attendances'
 import departments from '@/router/modules/departments'

@@ -5,6 +5,6 @@ export default {
   children: [{
     path: '',
     component: () => import('@/views/permission'),
-    meta: { title: '权限管理' }
+    meta: { title: '权限管理', icon: 'lock' }
   }]
 }

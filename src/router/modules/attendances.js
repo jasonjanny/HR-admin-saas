@@ -5,6 +5,6 @@ export default {
   children: [{
     path: '',
     component: () => import('@/views/attendances'),
-    meta: { title: '考勤' }
+    meta: { title: '考勤', icon: 'skill' }
   }]
 }
