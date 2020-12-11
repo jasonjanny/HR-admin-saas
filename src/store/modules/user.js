@@ -1,5 +1,6 @@
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
-import { setToken, getToken, removeToken } from '@/utils/auth'
+import { setToken, getToken, removeToken, setTimeStamp } from '@/utils/auth'
+import { Message } from 'element-ui'
 // 状态
 const state = {
   token: getToken(),
@@ -28,13 +29,15 @@ const mutations = {
 const actions = {
   async login(context, data) {
     const res = await login(data)
+    Message.success('登录成功')
+    // 设置时间戳
+    setTimeStamp()
     // 调用 mutations
     context.commit('setToken', res)
   },
   async getUserInfo(context) {
     // 获取基本信息
     const dataUserInfo = await getUserInfo()
-    console.log(dataUserInfo)
     // 获取详细信息
     const dataUserDetail = await getUserDetailById(dataUserInfo.userId)
     // 两个信息合并

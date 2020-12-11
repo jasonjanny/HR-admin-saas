@@ -69,7 +69,6 @@
 
 <script>
 import { validMobile, validPassword } from '@/utils/validate'
-import { Message } from 'element-ui'
 
 export default {
   name: 'Login',
@@ -127,7 +126,6 @@ export default {
 
         if (isValid) {
           await this.$store.dispatch('user/login', this.loginForm)
-          Message.success('登录成功')
           this.$router.push('/')
         }
       } catch (err) {
