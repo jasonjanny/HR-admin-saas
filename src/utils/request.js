@@ -45,6 +45,10 @@ service.interceptors.response.use(res => {
   }
 }, err => {
   // 状态码直接错误
+  if (err.response && err.response.data && err.response.data.code === 10002) {
+    store.dispatch('user/logout')
+    router.push('/login')
+  }
   Message.error(err.message)
   return Promise.reject(new Error(err.message))
 })
@@ -54,8 +58,6 @@ function isCheckTimeout() {
   const now = Date.now()
   // 获取登录时保存的时间戳
   const savedTime = getTimeStamp()
-  console.log(now)
-  console.log(savedTime)
   // 将两个时间戳进行判断
   return (now - savedTime) / 1000 >= timeout
 }
