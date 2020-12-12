@@ -57,7 +57,8 @@ export default {
           // 如果点击了确定就会进入then
           return delDepartments(this.data.id) // 返回promise对象
         }).then(() => {
-
+          this.$emit('delDepts')
+          this.$message.success('删除成功')
         })
       }
     }

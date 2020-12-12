@@ -9,7 +9,7 @@
         <TreeTools :data="company" :is-root="true" />
         <hr>
         <!-- 树形结构 -->
-        <el-tree :data="departs" :props="defaultProps" default-expand-all>
+        <el-tree :data="departs" :props="defaultProps" default-expand-all @delDepts="getDepartments">
           <TreeTools slot-scope="{data}" :data="data" />
         </el-tree>
       </el-card>
