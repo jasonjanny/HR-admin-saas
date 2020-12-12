@@ -115,3 +115,21 @@ export function param2Obj(url) {
   })
   return obj
 }
+// 递归树形数据
+export function transListToTreeData(list, rootValue) {
+  var arr = []
+  list && list.forEach(item => {
+    if (item.pid === rootValue) {
+      // 如果找到了item 先把它放到数组中
+      arr.push(item)
+      // 要去找这个item它的子级  item.id = 子级的pid
+      const child = transListToTreeData(list, item.id)
+      // child数组 表示你找到了你的几个儿子
+      if (child.length) {
+        // 表示了找到了儿子
+        item.children = child
+      }
+    }
+  })
+  return arr
+}
