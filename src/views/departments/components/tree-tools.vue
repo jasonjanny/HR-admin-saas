@@ -6,7 +6,7 @@
     <el-col :span="4">
       <el-row type="flex" justify="end">
         <!-- 两个内容 -->
-        <el-col>{{ data.manage }}</el-col>
+        <el-col>{{ data.manager }}</el-col>
         <el-col>
           <!-- 下拉菜单 element -->
           <el-dropdown @command="operateDepts">
@@ -43,7 +43,7 @@ export default {
     operateDepts(type) {
       if (type === 'add') {
         // 添加子部门
-
+        this.$emit('addDepts', this.data)
       } else if (type === 'edit') {
         // 编辑部门
 
@@ -55,11 +55,12 @@ export default {
           type: 'warning'
         }).then(() => {
           // 如果点击了确定就会进入then
-          return delDepartments(this.data.id) // 返回promise对象
-        }).then(() => {
-          this.$emit('delDepts')
-          this.$message.success('删除成功')
-        })
+          // 返回promise对象
+          return delDepartments(this.data.id).then(() => {
+            this.$emit('delDepts')
+            this.$message.success('删除成功')
+          }).catch(() => {})
+        }).catch(() => {})
       }
     }
   }
