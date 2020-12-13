@@ -3,7 +3,7 @@
   <el-dialog title="新增部门" :visible="showDialog">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
-    <el-form label-width="120px" :model="formdata" :rules="rules">
+    <el-form ref="form" label-width="120px" :model="formdata" :rules="rules">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="formdata.name" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
@@ -23,7 +23,7 @@
     <el-row slot="footer" type="flex" justify="center">
       <!-- 列被分为24 -->
       <el-col :span="6">
-        <el-button type="primary" size="small">确定</el-button>
+        <el-button type="primary" size="small" @click="btnOk">确定</el-button>
         <el-button size="small">取消</el-button>
       </el-col>
     </el-row>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { getDepartments } from '@/api/departments'
+import { getDepartments, addDepartments } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 export default {
 // 需要传入一个props变量来控制 显示或者隐藏
@@ -49,7 +49,6 @@ export default {
     // 自定义校验部门名称
     const validateDeptsName = async(rule, value, callback) => {
       const { depts } = await getDepartments()
-      console.log(depts)
       depts.some(item => item.name === value && item.pid === this.data.id) ? callback(new Error('同一部门下不能出现重复名称')) : callback()
     }
 
@@ -91,6 +90,15 @@ export default {
     // 获取部门负责人数据
     async getEmployeeSimple() {
       this.people = await getEmployeeSimple()
+    },
+    // 全局校验表单
+    async btnOk() {
+      const isOk = await this.$refs.form.validate()
+      if (isOk) {
+        await addDepartments({ ...this.formdata, pid: this.data.id })
+        this.$emit('addDepts')
+        this.$message.success('成功添加部门')
+      }
     }
   }
 }
