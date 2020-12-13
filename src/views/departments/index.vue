@@ -13,18 +13,22 @@
         <TreeTools :data="company" :is-root="true" />
         <hr>
         <!-- 树形结构 -->
-        <el-tree
-          :data="departs"
-          :props="defaultProps"
-          default-expand-all
-          @delDepts="getDepartments"
-        >
-          <TreeTools slot-scope="{ data }" :data="data" @addDepts="addDepts" />
+        <el-tree :data="departs" :props="defaultProps" default-expand-all>
+          <TreeTools
+            slot-scope="{ data }"
+            :data="data"
+            @addDepts="addDepts"
+            @delDepts="getDepartments"
+          />
         </el-tree>
       </el-card>
     </div>
     <!-- 放置新增弹层组件  -->
-    <AddDept :show-dialog.sync="showDialog" :data="node" @addDepts="getDepartments" />
+    <AddDept
+      :show-dialog.sync="showDialog"
+      :data="node"
+      @addDepts="getDepartments"
+    />
   </div>
 </template>
 
