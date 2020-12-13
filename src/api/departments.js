@@ -14,3 +14,12 @@ export function delDepartments(id) {
     url: '/company/department/' + id
   })
 }
+
+// 添加部门
+export function addDepartments(data) {
+  return request({
+    method: 'post',
+    url: '/company/department',
+    data
+  })
+}
