@@ -11,7 +11,9 @@
         <el-input v-model="formdata.code" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
       <el-form-item label="部门负责人" prop="manager">
-        <el-select style="width:80%" placeholder="请选择" />
+        <el-select v-model="formdata.manager" style="width:80%" placeholder="请选择" @focus="getEmployeeSimple">
+          <el-option v-for="item in people" :key="item.id" :value="item.username" :label="item.username" />
+        </el-select>
       </el-form-item>
       <el-form-item label="部门介绍" prop="introduce">
         <el-input v-model="formdata.introduce" style="width:80%" placeholder="1-300个字符" type="textarea" :rows="3" />
@@ -30,6 +32,7 @@
 
 <script>
 import { getDepartments } from '@/api/departments'
+import { getEmployeeSimple } from '@/api/employees'
 export default {
 // 需要传入一个props变量来控制 显示或者隐藏
   props: {
@@ -74,13 +77,20 @@ export default {
           { trigger: 'blur', validator: validateDeptsCode }
         ],
         manager: [
-          { required: true, message: '部门负责人不能为空', trigger: 'blur' }
+          { required: true, message: '部门负责人不能为空', trigger: 'change' }
         ],
         introduce: [
           { required: true, message: '部门介绍不能为空', trigger: 'blur' },
           { trigger: 'blur', min: 1, max: 300, message: '部门介绍要求1-300个字符' }
         ]
-      }
+      },
+      people: []
+    }
+  },
+  methods: {
+    // 获取部门负责人数据
+    async getEmployeeSimple() {
+      this.people = await getEmployeeSimple()
     }
   }
 }
