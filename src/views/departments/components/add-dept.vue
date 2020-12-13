@@ -29,15 +29,32 @@
 </template>
 
 <script>
+import { getDepartments } from '@/api/departments'
 export default {
 // 需要传入一个props变量来控制 显示或者隐藏
   props: {
     showDialog: {
       type: Boolean,
       default: false
+    },
+    data: {
+      type: Object,
+      required: true
     }
   },
   data() {
+    // 自定义校验部门名称
+    const validateDeptsName = async(rule, value, callback) => {
+      const { depts } = await getDepartments()
+      console.log(depts)
+      depts.some(item => item.name === value && item.pid === this.data.id) ? callback(new Error('同一部门下不能出现重复名称')) : callback()
+    }
+
+    // 自定义校验部门编码
+    const validateDeptsCode = async(rule, value, callback) => {
+      const { depts } = await getDepartments()
+      depts.some(item => item.code === value && value) ? callback(new Error('同一部门下不能出现重复编码')) : callback()
+    }
     return {
       formdata: {
         name: '',
@@ -48,11 +65,13 @@ export default {
       rules: {
         name: [
           { required: true, message: '部门名称不能为空', trigger: 'blur' },
-          { min: 1, max: 50, message: '部门名称要求1-50个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '部门名称要求1-50个字符', trigger: 'blur' },
+          { trigger: 'blur', validator: validateDeptsName }
         ],
         code: [
           { required: true, message: '部门编码不能为空', trigger: 'blur' },
-          { min: 1, max: 50, message: '部门编码要求1-50个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '部门编码要求1-50个字符', trigger: 'blur' },
+          { trigger: 'blur', validator: validateDeptsCode }
         ],
         manager: [
           { required: true, message: '部门负责人不能为空', trigger: 'blur' }

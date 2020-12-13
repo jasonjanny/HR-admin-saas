@@ -24,7 +24,7 @@
       </el-card>
     </div>
     <!-- 放置新增弹层组件  -->
-    <AddDept :show-dialog="showDialog" />
+    <AddDept :show-dialog="showDialog" :data="node" />
   </div>
 </template>
 
@@ -52,7 +52,7 @@ export default {
         isRoot: true
       },
       showDialog: false,
-      node: null
+      node: {}
     }
   },
   created() {
