@@ -105,6 +105,8 @@ export default {
     // 取消
     btnCancel() {
       this.$emit('update:showDialog', false)
+      // 重置表单数据和校验字段
+      this.$refs.form.resetFields()
     }
   }
 }
