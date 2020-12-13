@@ -1,19 +1,30 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        mode="horizontal"
+      >
         <el-menu-item index="1">组织架构</el-menu-item>
       </el-menu>
-      <el-card class="tree-card" style="margin-top:50px">
+      <el-card class="tree-card" style="margin-top: 50px">
         <!-- 用了一个行列布局 -->
         <TreeTools :data="company" :is-root="true" />
         <hr>
         <!-- 树形结构 -->
-        <el-tree :data="departs" :props="defaultProps" default-expand-all @delDepts="getDepartments">
-          <TreeTools slot-scope="{data}" :data="data" />
+        <el-tree
+          :data="departs"
+          :props="defaultProps"
+          default-expand-all
+          @delDepts="getDepartments"
+        >
+          <TreeTools slot-scope="{ data }" :data="data" @addDepts="addDepts" />
         </el-tree>
       </el-card>
     </div>
+    <!-- 放置新增弹层组件  -->
+    <AddDept :show-dialog="showDialog" />
   </div>
 </template>
 
@@ -21,9 +32,11 @@
 import TreeTools from './components/tree-tools'
 import { getDepartments } from '@/api/departments'
 import { transListToTreeData } from '@/utils/index'
+import AddDept from '@/views/departments/components/add-dept'
 export default {
   components: {
-    TreeTools
+    TreeTools,
+    AddDept
   },
   data() {
     return {
@@ -35,9 +48,11 @@ export default {
       },
       company: {
         name: '',
-        manage: '负责人',
+        manager: '负责人',
         isRoot: true
-      }
+      },
+      showDialog: false,
+      node: null
     }
   },
   created() {
@@ -47,9 +62,12 @@ export default {
   methods: {
     async getDepartments() {
       const data = await getDepartments()
-      console.log(data)
       this.company.name = data.companyName
       this.departs = transListToTreeData(data.depts, '')
+    },
+    addDepts(node) {
+      this.showDialog = true
+      this.node = node
     }
   }
 }
@@ -57,7 +75,7 @@ export default {
 
 <style scoped>
 .tree-card {
-  padding: 30px  140px;
-  font-size:14px;
+  padding: 30px 140px;
+  font-size: 14px;
 }
 </style>
