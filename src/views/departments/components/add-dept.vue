@@ -1,6 +1,6 @@
 <template>
   <!-- 新增部门的弹层 -->
-  <el-dialog title="新增部门" :visible="showDialog">
+  <el-dialog title="新增部门" :visible="showDialog" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <el-form ref="form" label-width="120px" :model="formdata" :rules="rules">
@@ -24,7 +24,7 @@
       <!-- 列被分为24 -->
       <el-col :span="6">
         <el-button type="primary" size="small" @click="btnOk">确定</el-button>
-        <el-button size="small">取消</el-button>
+        <el-button size="small" @click="btnCancel">取消</el-button>
       </el-col>
     </el-row>
   </el-dialog>
@@ -97,8 +97,14 @@ export default {
       if (isOk) {
         await addDepartments({ ...this.formdata, pid: this.data.id })
         this.$emit('addDepts')
+        // 利用sync修饰符关闭新增弹层
+        this.$emit('update:showDialog', false)
         this.$message.success('成功添加部门')
       }
+    },
+    // 取消
+    btnCancel() {
+      this.$emit('update:showDialog', false)
     }
   }
 }
