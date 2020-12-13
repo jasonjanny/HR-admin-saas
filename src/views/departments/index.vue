@@ -49,6 +49,7 @@ export default {
       company: {
         name: '',
         manager: '负责人',
+        id: '',
         isRoot: true
       },
       showDialog: false,
