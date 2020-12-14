@@ -54,11 +54,11 @@
             </el-row>
             <!-- 弹窗 -->
             <el-dialog title="编辑弹窗" :visible="showDialog" style="width:'50%">
-              <el-form label-width="80px" :model="roleDetailForm">
-                <el-form-item label="角色名称">
+              <el-form ref="dialogForm" label-width="80px" :model="roleDetailForm" :rules="rules">
+                <el-form-item label="角色名称" prop="name">
                   <el-input v-model="roleDetailForm.name" />
                 </el-form-item>
-                <el-form-item label="角色描述">
+                <el-form-item label="角色描述" prop="description">
                   <el-input v-model="roleDetailForm.description" />
                 </el-form-item>
               </el-form>
@@ -66,7 +66,7 @@
               <el-row type="flex" justify="center">
                 <el-col :span="6">
                   <el-button>取消</el-button>
-                  <el-button type="primary">确定</el-button>
+                  <el-button type="primary" @click="btnOk">确定</el-button>
                 </el-col>
               </el-row>
             </el-dialog>
@@ -105,12 +105,30 @@
 </template>
 
 <script>
-import { delRole, getCompanyInfo, getRoleDetail, getRoleList } from '@/api/setting'
+import { delRole, editRole, getCompanyInfo, getRoleDetail, getRoleList } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
       showDialog: false,
+      rules: {
+        name: [
+          {
+            required: true, message: '角色名称不能为空', trigger: 'blur'
+          },
+          {
+            min: 2, max: 12, message: '角色名称在2-12位字符间', trigger: 'blur'
+          }
+        ],
+        description: [
+          {
+            required: true, message: '角色描述不能为空', trigger: 'blur'
+          },
+          {
+            min: 2, max: 100, message: '角色描述在2-100位字符间', trigger: 'blur'
+          }
+        ]
+      },
       roleDetailForm: {},
       formData: [],
       activeName: 'role',
@@ -175,6 +193,24 @@ export default {
     async editRole(id) {
       this.roleDetailForm = await getRoleDetail(id)
       this.showDialog = true
+    },
+    // 点击确定按钮
+    async btnOk() {
+      try {
+        // 全局校验
+        const isValid = await this.$refs.dialogForm.validate()
+        if (isValid) {
+          // 发送编辑请求
+          await editRole(this.roleDetailForm)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      // 重新获取数据
+      this.getRoleList()
+      this.$message.success('编辑成功')
+      // 隐藏弹窗
+      this.showDialog = false
     },
     currentChange(newPage) {
       this.pageSetting.page = newPage
