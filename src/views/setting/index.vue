@@ -30,9 +30,9 @@
               <el-table-column label="角色名称" width="240" prop="name" />
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
-                <template slot-scope="scope">
-                  <el-button size="small" type="primary">编辑</el-button>
-                  <el-button size="small" type="danger" @click="delRole(scope.row.id)">删除</el-button>
+                <template slot-scope="{row}">
+                  <el-button size="small" type="primary" @click="editRole(row.id)">编辑</el-button>
+                  <el-button size="small" type="danger" @click="delRole(row.id)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -52,6 +52,24 @@
                 @size-change="sizeChange"
               />
             </el-row>
+            <!-- 弹窗 -->
+            <el-dialog title="编辑弹窗" :visible="showDialog" style="width:'50%">
+              <el-form label-width="80px" :model="roleDetailForm">
+                <el-form-item label="角色名称">
+                  <el-input v-model="roleDetailForm.name" />
+                </el-form-item>
+                <el-form-item label="角色描述">
+                  <el-input v-model="roleDetailForm.description" />
+                </el-form-item>
+              </el-form>
+              <!-- 底部按钮 -->
+              <el-row type="flex" justify="center">
+                <el-col :span="6">
+                  <el-button>取消</el-button>
+                  <el-button type="primary">确定</el-button>
+                </el-col>
+              </el-row>
+            </el-dialog>
           </el-tab-pane>
           <!-- 公司信息 -->
           <el-tab-pane name="company" label="公司信息">
@@ -87,11 +105,13 @@
 </template>
 
 <script>
-import { delRole, getCompanyInfo, getRoleList } from '@/api/setting'
+import { delRole, getCompanyInfo, getRoleDetail, getRoleList } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      showDialog: false,
+      roleDetailForm: {},
       formData: [],
       activeName: 'role',
       roleList: [],
@@ -150,6 +170,11 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    // 编辑角色
+    async editRole(id) {
+      this.roleDetailForm = await getRoleDetail(id)
+      this.showDialog = true
     },
     currentChange(newPage) {
       this.pageSetting.page = newPage
