@@ -16,6 +16,7 @@
                   icon="el-icon-plus"
                   size="small"
                   type="primary"
+                  @click="showDialog = true"
                 >新增角色
                 </el-button>
               </el-col>
@@ -53,7 +54,7 @@
               />
             </el-row>
             <!-- 弹窗 -->
-            <el-dialog title="编辑弹窗" :visible="showDialog" style="width:'50%">
+            <el-dialog :title="title" :visible="showDialog" style="width:'50%">
               <el-form ref="dialogForm" label-width="80px" :model="roleDetailForm" :rules="rules">
                 <el-form-item label="角色名称" prop="name">
                   <el-input v-model="roleDetailForm.name" />
@@ -105,7 +106,7 @@
 </template>
 
 <script>
-import { delRole, editRole, getCompanyInfo, getRoleDetail, getRoleList } from '@/api/setting'
+import { addRole, delRole, editRole, getCompanyInfo, getRoleDetail, getRoleList } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -141,7 +142,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['companyId'])
+    ...mapGetters(['companyId']),
+    title() {
+      return this.roleDetailForm.id ? '编辑弹窗' : '新增弹窗'
+    }
+
   },
   watch: {
     // 本来watch是要数据发生变化时才会触发
@@ -200,15 +205,21 @@ export default {
         // 全局校验
         const isValid = await this.$refs.dialogForm.validate()
         if (isValid) {
-          // 发送编辑请求
-          await editRole(this.roleDetailForm)
+          if (this.roleDetailForm.id) {
+            // 发送编辑请求
+            await editRole(this.roleDetailForm)
+            this.$message.success('编辑成功')
+          } else {
+            // 发送新增请求
+            await addRole(this.roleDetailForm)
+            this.$message.success('添加成功')
+          }
         }
       } catch (error) {
         console.log(error)
       }
       // 重新获取数据
       this.getRoleList()
-      this.$message.success('编辑成功')
       // 隐藏弹窗
       this.showDialog = false
     },
