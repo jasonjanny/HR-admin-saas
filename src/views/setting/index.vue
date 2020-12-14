@@ -3,6 +3,7 @@
     <div class="app-container">
       <el-card>
         <el-tabs v-model="activeName">
+          <!-- 角色管理 -->
           <el-tab-pane name="role" label="角色管理">
             <el-row
               style="height: 80px"
@@ -29,8 +30,10 @@
               <el-table-column label="角色名称" width="240" prop="name" />
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
-                <el-button size="small" type="primary">编辑</el-button>
-                <el-button size="small" type="danger">删除</el-button>
+                <template slot-scope="scope">
+                  <el-button size="small" type="primary">编辑</el-button>
+                  <el-button size="small" type="danger" @click="delRole(scope.row.id)">删除</el-button>
+                </template>
               </el-table-column>
             </el-table>
             <!-- 分页 -->
@@ -50,6 +53,7 @@
               />
             </el-row>
           </el-tab-pane>
+          <!-- 公司信息 -->
           <el-tab-pane name="company" label="公司信息">
             <el-alert
               title="对公司名称、公司地址、营业执照、公司地区的更新，将使得公司资料被重新审核，请谨慎修改"
@@ -83,7 +87,7 @@
 </template>
 
 <script>
-import { getCompanyInfo, getRoleList } from '@/api/setting'
+import { delRole, getCompanyInfo, getRoleList } from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -133,6 +137,19 @@ export default {
     async getCompanyInfo() {
       const data = await getCompanyInfo(this.companyId)
       this.formData = data
+    },
+    // 删除角色
+    async delRole(id) {
+      try {
+        await this.$confirm('确认要删除这个角色吗？', '提示', {
+          type: 'warning'
+        })
+        await delRole(id)
+        this.$message.success('删除角色成功')
+        this.getRoleList()
+      } catch (error) {
+        console.log(error)
+      }
     },
     currentChange(newPage) {
       this.pageSetting.page = newPage
