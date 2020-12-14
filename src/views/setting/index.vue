@@ -54,7 +54,7 @@
               />
             </el-row>
             <!-- 弹窗 -->
-            <el-dialog :title="title" :visible="showDialog" style="width:'50%">
+            <el-dialog :title="title" :visible="showDialog" style="width:'50%" @close="btnCancel">
               <el-form ref="dialogForm" label-width="80px" :model="roleDetailForm" :rules="rules">
                 <el-form-item label="角色名称" prop="name">
                   <el-input v-model="roleDetailForm.name" />
@@ -66,7 +66,7 @@
               <!-- 底部按钮 -->
               <el-row type="flex" justify="center">
                 <el-col :span="6">
-                  <el-button>取消</el-button>
+                  <el-button @click="btnCancel">取消</el-button>
                   <el-button type="primary" @click="btnOk">确定</el-button>
                 </el-col>
               </el-row>
@@ -221,6 +221,15 @@ export default {
       // 重新获取数据
       this.getRoleList()
       // 隐藏弹窗
+      this.showDialog = false
+    },
+    // 点击取消和关闭按钮
+    btnCancel() {
+      this.roleDetailForm = {
+        name: '',
+        description: ''
+      }
+      this.$refs.dialogForm.resetFields()
       this.showDialog = false
     },
     currentChange(newPage) {
