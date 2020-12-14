@@ -23,3 +23,19 @@ export function delRole(id) {
     url: '/sys/role/' + id
   })
 }
+
+// 编辑角色
+export function editRole(data) {
+  return request({
+    method: 'put',
+    url: '/sys/role/' + data.id,
+    data
+  })
+}
+
+// 根据id获取角色
+export function getRoleDetail(id) {
+  return request({
+    url: '/sys/role/' + id
+  })
+}
