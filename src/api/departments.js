@@ -30,3 +30,12 @@ export function getDepartmentsDetails(id) {
     url: '/company/department/' + id
   })
 }
+
+// 编辑部门
+export function editDepartment(data) {
+  return request({
+    method: 'put',
+    url: '/company/department/' + data.id,
+    data
+  })
+}
