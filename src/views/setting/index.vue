@@ -101,9 +101,25 @@ export default {
   computed: {
     ...mapGetters(['companyId'])
   },
+  watch: {
+    // 本来watch是要数据发生变化时才会触发
+    // 现在希望进来页面不管数据有没有变化都触发
+    // 1、别的页面进来，companyId不变
+    // 2、当前页面刷新，companyId变化：从无到有
+    companyId: {
+      handler() {
+        // 如果当前页面存在companyId
+        if (this.companyId) {
+          // 获取公司信息
+          this.getCompanyInfo()
+        }
+        // 否则就进行等待，等待路由守卫获取到用户的数据
+      },
+      immediate: true
+    }
+  },
   created() {
     this.getRoleList()
-    this.getCompanyInfo()
   },
 
   methods: {
