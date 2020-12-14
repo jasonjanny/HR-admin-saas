@@ -19,6 +19,7 @@
             :data="data"
             @addDepts="addDepts"
             @delDepts="getDepartments"
+            @editDepts="editDepts"
           />
         </el-tree>
       </el-card>
@@ -71,6 +72,10 @@ export default {
       this.departs = transListToTreeData(data.depts, '')
     },
     addDepts(node) {
+      this.showDialog = true
+      this.node = node
+    },
+    editDepts(node) {
       this.showDialog = true
       this.node = node
     }

@@ -46,7 +46,7 @@ export default {
         this.$emit('addDepts', this.data)
       } else if (type === 'edit') {
         // 编辑部门
-
+        this.$emit('editDepts', this.data)
       } else {
         // 删除部门
         this.$confirm('确定要删除该部门吗', '提示', {
