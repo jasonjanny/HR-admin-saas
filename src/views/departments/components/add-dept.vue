@@ -49,13 +49,25 @@ export default {
     // 自定义校验部门名称
     const validateDeptsName = async(rule, value, callback) => {
       const { depts } = await getDepartments()
-      depts.some(item => item.name === value && item.pid === this.data.id) ? callback(new Error('同一部门下不能出现重复名称')) : callback()
+      if (this.formdata.id) {
+        // 编辑
+        depts.some(item => item.id !== this.formdata.id && item.name === value && item.pid === this.data.id) ? callback(new Error('同一部门下不能出现重复名称')) : callback()
+      } else {
+        // 新增
+        depts.some(item => item.name === value && item.pid === this.data.id) ? callback(new Error('同一部门下不能出现重复名称')) : callback()
+      }
     }
 
     // 自定义校验部门编码
     const validateDeptsCode = async(rule, value, callback) => {
       const { depts } = await getDepartments()
-      depts.some(item => item.code === value && value) ? callback(new Error('同一部门下不能出现重复编码')) : callback()
+      if (this.formdata.id) {
+        // 编辑
+        depts.some(item => item.id !== this.formdata.id && item.code === value && value) ? callback(new Error('同一部门下不能出现重复编码')) : callback()
+      } else {
+        // 新增
+        depts.some(item => item.code === value && value) ? callback(new Error('同一部门下不能出现重复编码')) : callback()
+      }
     }
     return {
       formdata: {
