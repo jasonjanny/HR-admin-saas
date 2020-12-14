@@ -26,6 +26,7 @@
     </div>
     <!-- 放置新增弹层组件  -->
     <AddDept
+      ref="dept"
       :show-dialog.sync="showDialog"
       :data="node"
       @addDepts="getDepartments"
@@ -78,6 +79,9 @@ export default {
     editDepts(node) {
       this.showDialog = true
       this.node = node
+      this.$nextTick(() => {
+        this.$refs.dept.getDepartmentDetails()
+      })
     }
   }
 }

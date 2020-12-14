@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { getDepartments, addDepartments } from '@/api/departments'
+import { getDepartments, addDepartments, getDepartmentsDetails } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 export default {
 // 需要传入一个props变量来控制 显示或者隐藏
@@ -107,6 +107,13 @@ export default {
       this.$emit('update:showDialog', false)
       // 重置表单数据和校验字段
       this.$refs.form.resetFields()
+    },
+    // 数据回显
+    async getDepartmentDetails() {
+      // 直接将外面的数据回显
+      // this.formdata = this.data
+      const data = await getDepartmentsDetails(this.data.id)
+      this.formdata = data
     }
   }
 }
