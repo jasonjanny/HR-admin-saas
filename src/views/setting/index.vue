@@ -59,19 +59,19 @@
             />
             <el-form label-width="120px" style="margin-top:50px">
               <el-form-item label="企业名称">
-                <el-input style="width:400px" />
+                <el-input v-model="formData.name" disabled style="width:400px" />
               </el-form-item>
               <el-form-item label="公司地址">
-                <el-input style="width:400px" />
+                <el-input v-model="formData.companyAddress" disabled style="width:400px" />
               </el-form-item>
               <el-form-item label="公用电话">
-                <el-input style="width:400px" />
+                <el-input v-model="formData.companyPhone" disabled style="width:400px" />
               </el-form-item>
               <el-form-item label="邮箱">
-                <el-input style="width:400px" />
+                <el-input v-model="formData.mailbox" disabled style="width:400px" />
               </el-form-item>
               <el-form-item label="备注">
-                <el-input style="width:400px" />
+                <el-input v-model="formData.remarks" disabled style="width:400px" />
               </el-form-item>
             </el-form>
           </el-tab-pane>
@@ -83,10 +83,12 @@
 </template>
 
 <script>
-import { getRoleList } from '@/api/setting'
+import { getCompanyInfo, getRoleList } from '@/api/setting'
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      formData: [],
       activeName: 'role',
       roleList: [],
       pageSetting: {
@@ -96,15 +98,25 @@ export default {
       total: 0
     }
   },
+  computed: {
+    ...mapGetters(['companyId'])
+  },
   created() {
     this.getRoleList()
+    this.getCompanyInfo()
   },
+
   methods: {
     // 获取公司角色数据
     async getRoleList() {
       const { total, rows } = await getRoleList(this.pageSetting)
       this.total = total
       this.roleList = rows
+    },
+    // 获取公司信息
+    async getCompanyInfo() {
+      const data = await getCompanyInfo(this.companyId)
+      this.formData = data
     },
     currentChange(newPage) {
       this.pageSetting.page = newPage
