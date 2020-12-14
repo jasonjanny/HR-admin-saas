@@ -27,11 +27,21 @@
           <el-table-column label="角色名称" width="240" prop="name" />
           <el-table-column label="描述" prop="description" />
           <el-table-column label="操作">
-            <el-button size="small" type="success">分配权限</el-button>
             <el-button size="small" type="primary">编辑</el-button>
             <el-button size="small" type="danger">删除</el-button>
           </el-table-column>
         </el-table>
+        <!-- 分页 -->
+        <el-row type="flex" justify="center" align="middle" style="height:60px">
+          <el-pagination
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+            :page-size="pageSetting.pagesize"
+            :page-sizes="[2,5,10,20]"
+            @current-change="currentChange"
+            @size-change="sizeChange"
+          />
+        </el-row>
       </el-card>
     </div>
   </div>
@@ -46,7 +56,7 @@ export default {
       roleList: [],
       pageSetting: {
         page: 1,
-        pagesize: 5
+        pagesize: 2
       },
       total: 0
     }
@@ -55,11 +65,19 @@ export default {
     this.getRoleList()
   },
   methods: {
+    // 获取公司角色数据
     async getRoleList() {
       const { total, rows } = await getRoleList(this.pageSetting)
       this.total = total
       this.roleList = rows
-      console.log(this.roleList)
+    },
+    currentChange(newPage) {
+      this.pageSetting.page = newPage
+      this.getRoleList()
+    },
+    sizeChange(newPagesize) {
+      this.pageSetting.pagesize = newPagesize
+      this.getRoleList()
     }
   }
 }
