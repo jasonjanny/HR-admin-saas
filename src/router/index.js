@@ -71,13 +71,13 @@ import setting from '@/router/modules/setting'
 import social from '@/router/modules/social'
 
 const asyncRoutes = [
+  departments,
+  setting,
   approvals,
   attendances,
-  departments,
   employees,
   permission,
   salarys,
-  setting,
   social
 ]
 
