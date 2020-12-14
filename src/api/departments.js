@@ -23,3 +23,10 @@ export function addDepartments(data) {
     data
   })
 }
+
+// 根据id获取部门详情
+export function getDepartmentsDetails(id) {
+  return request({
+    url: '/company/department/' + id
+  })
+}
