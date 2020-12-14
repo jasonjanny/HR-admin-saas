@@ -109,6 +109,13 @@ export default {
     },
     // 取消
     btnCancel() {
+      // 重置数据
+      this.formdata = {
+        name: '',
+        code: '',
+        manager: '',
+        introduce: ''
+      }
       this.$emit('update:showDialog', false)
       // 重置表单数据和校验字段
       this.$refs.form.resetFields()
