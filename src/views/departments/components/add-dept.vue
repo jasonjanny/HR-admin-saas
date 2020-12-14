@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { getDepartments, addDepartments, getDepartmentsDetails } from '@/api/departments'
+import { getDepartments, addDepartments, getDepartmentsDetails, editDepartment } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
 export default {
 // 需要传入一个props变量来控制 显示或者隐藏
@@ -100,11 +100,18 @@ export default {
     async btnOk() {
       const isOk = await this.$refs.form.validate()
       if (isOk) {
-        await addDepartments({ ...this.formdata, pid: this.data.id })
-        this.$emit('addDepts')
+        // 区分是编辑还是新增
+        if (this.formdata.id) {
+          // 编辑
+          await editDepartment(this.formdata)
+        } else {
+          // 新增
+          await addDepartments({ ...this.formdata, pid: this.data.id })
+          this.$emit('addDepts')
+        }
         // 利用sync修饰符关闭新增弹层
         this.$emit('update:showDialog', false)
-        this.$message.success('成功添加部门')
+        this.$message.success('操作成功')
       }
     },
     // 取消
