@@ -31,9 +31,17 @@
               <el-table-column label="角色名称" width="240" prop="name" />
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
-                <template slot-scope="{row}">
-                  <el-button size="small" type="primary" @click="editRole(row.id)">编辑</el-button>
-                  <el-button size="small" type="danger" @click="delRole(row.id)">删除</el-button>
+                <template slot-scope="{ row }">
+                  <el-button
+                    size="small"
+                    type="primary"
+                    @click="editRole(row.id)"
+                  >编辑</el-button>
+                  <el-button
+                    size="small"
+                    type="danger"
+                    @click="delRole(row.id)"
+                  >删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -54,8 +62,18 @@
               />
             </el-row>
             <!-- 弹窗 -->
-            <el-dialog :title="title" :visible="showDialog" style="width:'50%" @close="btnCancel">
-              <el-form ref="dialogForm" label-width="80px" :model="roleDetailForm" :rules="rules">
+            <el-dialog
+              :title="title"
+              :visible="showDialog"
+              style="width:'50%"
+              @close="btnCancel"
+            >
+              <el-form
+                ref="dialogForm"
+                label-width="80px"
+                :model="roleDetailForm"
+                :rules="rules"
+              >
                 <el-form-item label="角色名称" prop="name">
                   <el-input v-model="roleDetailForm.name" />
                 </el-form-item>
@@ -80,33 +98,59 @@
               show-icon
               :closable="false"
             />
-            <el-form label-width="120px" style="margin-top:50px">
+            <el-form label-width="120px" style="margin-top: 50px">
               <el-form-item label="企业名称">
-                <el-input v-model="formData.name" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.name"
+                  disabled
+                  style="width: 400px"
+                />
               </el-form-item>
               <el-form-item label="公司地址">
-                <el-input v-model="formData.companyAddress" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.companyAddress"
+                  disabled
+                  style="width: 400px"
+                />
               </el-form-item>
               <el-form-item label="公用电话">
-                <el-input v-model="formData.companyPhone" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.companyPhone"
+                  disabled
+                  style="width: 400px"
+                />
               </el-form-item>
               <el-form-item label="邮箱">
-                <el-input v-model="formData.mailbox" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.mailbox"
+                  disabled
+                  style="width: 400px"
+                />
               </el-form-item>
               <el-form-item label="备注">
-                <el-input v-model="formData.remarks" disabled style="width:400px" />
+                <el-input
+                  v-model="formData.remarks"
+                  disabled
+                  style="width: 400px"
+                />
               </el-form-item>
             </el-form>
           </el-tab-pane>
         </el-tabs>
-
       </el-card>
     </div>
   </div>
 </template>
 
 <script>
-import { addRole, delRole, editRole, getCompanyInfo, getRoleDetail, getRoleList } from '@/api/setting'
+import {
+  addRole,
+  delRole,
+  editRole,
+  getCompanyInfo,
+  getRoleDetail,
+  getRoleList
+} from '@/api/setting'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -115,24 +159,37 @@ export default {
       rules: {
         name: [
           {
-            required: true, message: '角色名称不能为空', trigger: 'blur'
+            required: true,
+            message: '角色名称不能为空',
+            trigger: 'blur'
           },
           {
-            min: 2, max: 12, message: '角色名称在2-12位字符间', trigger: 'blur'
+            min: 2,
+            max: 12,
+            message: '角色名称在2-12位字符间',
+            trigger: 'blur'
           }
         ],
         description: [
           {
-            required: true, message: '角色描述不能为空', trigger: 'blur'
+            required: true,
+            message: '角色描述不能为空',
+            trigger: 'blur'
           },
           {
-            min: 2, max: 100, message: '角色描述在2-100位字符间', trigger: 'blur'
+            min: 2,
+            max: 100,
+            message: '角色描述在2-100位字符间',
+            trigger: 'blur'
           }
         ]
       },
+      // 单个角色详情
       roleDetailForm: {},
+      // 公司信息
       formData: [],
       activeName: 'role',
+      // 角色列表
       roleList: [],
       pageSetting: {
         page: 1,
@@ -146,7 +203,6 @@ export default {
     title() {
       return this.roleDetailForm.id ? '编辑弹窗' : '新增弹窗'
     }
-
   },
   watch: {
     // 本来watch是要数据发生变化时才会触发
@@ -187,6 +243,7 @@ export default {
         await this.$confirm('确认要删除这个角色吗？', '提示', {
           type: 'warning'
         })
+        // 只有点击了确认才能往下执行
         await delRole(id)
         this.$message.success('删除角色成功')
         this.getRoleList()
@@ -229,6 +286,7 @@ export default {
         name: '',
         description: ''
       }
+      // 移除校验
       this.$refs.dialogForm.resetFields()
       this.showDialog = false
     },
