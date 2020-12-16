@@ -19,6 +19,10 @@ import '@/permission' // permission control
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
 
+// 注册全局组件
+import Component from '@/components'
+Vue.use(Component)
+
 // 注册自定义指令
 import * as directives from '@/directives'
 // 遍历所有导出的自定义指令对象，完成自定义全局注册
