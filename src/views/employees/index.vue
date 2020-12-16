@@ -40,7 +40,7 @@
         <el-table-column label="部门" sortable="" prop="departmentName" />
         <el-table-column label="入职时间" sortable="">
           <template slot-scope="{row}">
-            {{ row.timeOfEntry | formatTimeEntry }}
+            {{ row.timeOfEntry | getNowFormatDate }}
           </template>
         </el-table-column>
         <el-table-column label="账户状态" sortable="" prop="enableState" />
@@ -74,11 +74,6 @@
 import { getEmployeesList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
 export default {
-  filters: {
-    formatTimeEntry(oldValue) {
-      return oldValue.split('T')[0]
-    }
-  },
   data() {
     return {
       activeIndex: '1',

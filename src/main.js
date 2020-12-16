@@ -31,6 +31,16 @@ Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
 })
 
+// 注册全局过滤器
+import * as filters from '@/filters'
+// 遍历
+for (const key in filters) {
+  const filtersName = key
+  const filtersFunction = filters[key]
+  // 注册每个过滤器
+  Vue.filter(filtersName, filtersFunction)
+}
+
 Vue.config.productionTip = false
 
 new Vue({
