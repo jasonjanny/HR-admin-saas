@@ -23,13 +23,20 @@
       <!-- 页面下方内容 -->
       <el-table border :data="employeesList">
         <el-table-column label="序号" sortable="">
+          <!-- 实现序号从一开始 -->
+          <!-- <el-table-column label="序号" sortable="" type="index" /> -->
           <template slot-scope="{ $index }">
             {{ (pageSetting.page - 1) * pageSetting.size + 1 + $index }}
           </template>
         </el-table-column>
         <el-table-column label="姓名" sortable="" prop="username" />
         <el-table-column label="工号" sortable="" prop="workNumber" />
-        <el-table-column label="聘用形式" sortable="" prop="formOfEmployment" />
+        <el-table-column
+          label="聘用形式"
+          sortable=""
+          prop="formOfEmployment"
+          :formatter="formatEmployment"
+        />
         <el-table-column label="部门" sortable="" prop="departmentName" />
         <el-table-column label="入职时间" sortable="" prop="timeOfEntry" />
         <el-table-column label="账户状态" sortable="" prop="enableState" />
@@ -49,7 +56,7 @@
         <el-pagination
           layout="total, sizes, prev, pager, next, jumper"
           :page-size="pageSetting.size"
-          :page-sizes="[2,5,10,20]"
+          :page-sizes="[2, 5, 10, 20]"
           :total="total"
           @current-change="currentChange"
           @size-change="sizeChange"
@@ -61,6 +68,7 @@
 
 <script>
 import { getEmployeesList } from '@/api/employees'
+import EmploymentEnum from '@/api/constant/employees'
 export default {
   data() {
     return {
@@ -89,6 +97,11 @@ export default {
     sizeChange(newSize) {
       this.pageSetting.size = newSize
       this.getEmployeesList()
+    },
+    // 格式化聘用形式
+    formatEmployment(row, column, cellValue, index) {
+      const obj = EmploymentEnum.hireType.find(item => item.id === cellValue)
+      return obj.value
     }
   }
 }
