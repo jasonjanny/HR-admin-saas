@@ -101,7 +101,7 @@ export default {
     // 格式化聘用形式
     formatEmployment(row, column, cellValue, index) {
       const obj = EmploymentEnum.hireType.find(item => item.id === cellValue)
-      return obj.value
+      return obj ? obj.value : '其他'
     }
   }
 }
