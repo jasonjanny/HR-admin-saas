@@ -42,7 +42,16 @@
           v-model="formData.departmentName"
           style="width: 50%"
           placeholder="请选择部门"
+          @focus="getDepartments"
         />
+        <div v-if="treeData.length" class="treeWrapper">
+          <el-tree
+            class="treeDepartment"
+            :data="treeData"
+            :props="{ label: 'name' }"
+            default-expand-all
+          />
+        </div>
       </el-form-item>
       <el-form-item label="转正时间" prop="correctionTime">
         <el-date-picker
@@ -65,6 +74,8 @@
 </template>
 
 <script>
+import { getDepartments } from '@/api/departments'
+import { transListToTreeData } from '@/utils/index'
 export default {
   props: {
     showDialog: {
@@ -74,6 +85,8 @@ export default {
   },
   data() {
     return {
+      // 树形数据
+      treeData: [],
       // 表单数据
       formData: {
         username: '',
@@ -109,9 +122,29 @@ export default {
         timeOfEntry: [{ required: true, message: '入职时间', trigger: 'blur' }]
       }
     }
+  },
+  methods: {
+    async getDepartments() {
+      const { depts } = await getDepartments()
+      this.treeData = transListToTreeData(depts, '')
+    }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.treeWrapper {
+  width: 300px;
+  height: 300px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  z-index: 999;
+  .treeDepartment {
+    width: 317px;
+    height: 100%;
+    overflow-y: scroll;
+  }
+}
 </style>
