@@ -17,14 +17,18 @@
       </PageTools>
 
       <!-- 页面下方内容 -->
-      <el-table border :data="list">
-        <el-table-column label="序号" sortable="" />
-        <el-table-column label="姓名" sortable="" prop="name" />
-        <el-table-column label="工号" sortable="" />
-        <el-table-column label="聘用形式" sortable="" />
-        <el-table-column label="部门" sortable="" />
-        <el-table-column label="入职时间" sortable="" />
-        <el-table-column label="账户状态" sortable="" />
+      <el-table border :data="employeesList">
+        <el-table-column label="序号" sortable="">
+          <template slot-scope="{$index}">
+            {{ $index + 1 }}
+          </template>
+        </el-table-column>
+        <el-table-column label="姓名" sortable="" prop="username" />
+        <el-table-column label="工号" sortable="" prop="workNumber" />
+        <el-table-column label="聘用形式" sortable="" prop="formOfEmployment" />
+        <el-table-column label="部门" sortable="" prop="departmentName" />
+        <el-table-column label="入职时间" sortable="" prop="timeOfEntry" />
+        <el-table-column label="账户状态" sortable="" prop="enableState" />
         <el-table-column label="操作" sortable="" fixed="right" width="280">
           <template>
             <el-button type="text" size="small">查看</el-button>
@@ -48,16 +52,27 @@
 </template>
 
 <script>
+import { getEmployeesList } from '@/api/employees'
 export default {
   data() {
     return {
       activeIndex: '1',
-      list: [
-        { name: '王大锤' },
-        { name: '陈翠花' },
-        { name: 'Tom' },
-        { name: 'Jerry' }
-      ]
+      employeesList: [],
+      pageSetting: {
+        page: 1,
+        size: 5
+      },
+      total: 0
+    }
+  },
+  created() {
+    this.getEmployeesList()
+  },
+  methods: {
+    async getEmployeesList() {
+      const { rows, total } = await getEmployeesList(this.pageSetting)
+      this.employeesList = rows
+      this.total = total
     }
   }
 }
