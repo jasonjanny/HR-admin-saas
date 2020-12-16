@@ -44,12 +44,13 @@
           placeholder="请选择部门"
           @focus="getDepartments"
         />
-        <div v-if="treeData.length" class="treeWrapper">
+        <div v-if="showTree" class="treeWrapper">
           <el-tree
             class="treeDepartment"
             :data="treeData"
             :props="{ label: 'name' }"
             default-expand-all
+            @node-click="selectNode"
           />
         </div>
       </el-form-item>
@@ -85,6 +86,8 @@ export default {
   },
   data() {
     return {
+      // 显示树形表单
+      showTree: false,
       // 树形数据
       treeData: [],
       // 表单数据
@@ -127,6 +130,11 @@ export default {
     async getDepartments() {
       const { depts } = await getDepartments()
       this.treeData = transListToTreeData(depts, '')
+      this.showTree = true
+    },
+    selectNode(node) {
+      this.formData.departmentName = node.name
+      this.showTree = false
     }
   }
 }
