@@ -1,8 +1,9 @@
 <template>
   <!-- 新增部门的弹层 -->
-  <el-dialog :title="title" :visible="showDialog" @close="btnCancel">
+  <el-dialog :title="title" :visible="showDialog" :destory-on-close="true" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
+    <!-- 或者在el-form里面添加v-if判断，当弹窗消失后将el-form表单清除 -->
     <el-form ref="form" label-width="120px" :model="formdata" :rules="rules">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="formdata.name" style="width:80%" placeholder="1-50个字符" />

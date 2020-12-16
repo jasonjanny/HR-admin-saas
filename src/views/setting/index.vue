@@ -290,10 +290,12 @@ export default {
       this.$refs.dialogForm.resetFields()
       this.showDialog = false
     },
-    currentChange(newPage) {
+    // 当前页面变更
+    crrentChange(newPage) {
       this.pageSetting.page = newPage
       this.getRoleList()
     },
+    // 每页长度变更
     sizeChange(newPagesize) {
       this.pageSetting.pagesize = newPagesize
       this.getRoleList()
