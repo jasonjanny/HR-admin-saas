@@ -16,7 +16,11 @@
         <template slot="after">
           <el-button size="small" type="warning">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
-          <el-button size="small" type="primary">新增员工</el-button>
+          <el-button
+            size="small"
+            type="primary"
+            icon="el-icon-plus"
+          >新增员工</el-button>
         </template>
       </PageTools>
 
@@ -39,19 +43,19 @@
         />
         <el-table-column label="部门" sortable="" prop="departmentName" />
         <el-table-column label="入职时间" sortable="">
-          <template slot-scope="{row}">
+          <template slot-scope="{ row }">
             {{ row.timeOfEntry | getNowFormatDate }}
           </template>
         </el-table-column>
         <el-table-column label="账户状态" sortable="" prop="enableState" />
         <el-table-column label="操作" sortable="" fixed="right" width="280">
-          <template>
+          <template slot-scope="{row}">
             <el-button type="text" size="small">查看</el-button>
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
             <el-button type="text" size="small">角色</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -71,7 +75,7 @@
 </template>
 
 <script>
-import { getEmployeesList } from '@/api/employees'
+import { delEmployee, getEmployeesList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
 export default {
   data() {
@@ -89,6 +93,7 @@ export default {
     this.getEmployeesList()
   },
   methods: {
+    // 获取员工列表
     async getEmployeesList() {
       const { rows, total } = await getEmployeesList(this.pageSetting)
       this.employeesList = rows
@@ -104,8 +109,21 @@ export default {
     },
     // 格式化聘用形式
     formatEmployment(row, column, cellValue, index) {
-      const obj = EmploymentEnum.hireType.find(item => item.id === cellValue)
+      const obj = EmploymentEnum.hireType.find((item) => item.id === cellValue)
       return obj ? obj.value : '其他'
+    },
+    // 删除员工
+    async delEmployee(id) {
+      try {
+        await this.$confirm('确定要删除此员工吗？', '提示', {
+          type: 'warning'
+        })
+        await delEmployee(id)
+        await getEmployeesList()
+        this.$message.success('成功删除员工')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
