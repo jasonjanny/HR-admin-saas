@@ -1,7 +1,11 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo"
+        mode="horizontal"
+      >
         <el-menu-item index="1">员工</el-menu-item>
       </el-menu>
       <!-- 页面上方工具条 -->
@@ -19,8 +23,8 @@
       <!-- 页面下方内容 -->
       <el-table border :data="employeesList">
         <el-table-column label="序号" sortable="">
-          <template slot-scope="{$index}">
-            {{ $index + 1 }}
+          <template slot-scope="{ $index }">
+            {{ (pageSetting.page - 1) * pageSetting.size + 1 + $index }}
           </template>
         </el-table-column>
         <el-table-column label="姓名" sortable="" prop="username" />
@@ -41,10 +45,14 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <el-row type="flex" justify="end" align="middle" style="height: 60px;">
+      <el-row type="flex" justify="end" align="middle" style="height: 60px">
         <el-pagination
-          layout="prev, pager, next"
-          :total="80"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-size="pageSetting.size"
+          :page-sizes="[2,5,10,20]"
+          :total="total"
+          @current-change="currentChange"
+          @size-change="sizeChange"
         />
       </el-row>
     </div>
@@ -73,11 +81,18 @@ export default {
       const { rows, total } = await getEmployeesList(this.pageSetting)
       this.employeesList = rows
       this.total = total
+    },
+    currentChange(newPage) {
+      this.pageSetting.page = newPage
+      this.getEmployeesList()
+    },
+    sizeChange(newSize) {
+      this.pageSetting.size = newSize
+      this.getEmployeesList()
     }
   }
 }
 </script>
 
 <style>
-
 </style>
