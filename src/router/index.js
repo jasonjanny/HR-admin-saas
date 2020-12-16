@@ -73,9 +73,9 @@ import social from '@/router/modules/social'
 const asyncRoutes = [
   departments,
   setting,
+  employees,
   approvals,
   attendances,
-  employees,
   permission,
   salarys,
   social
