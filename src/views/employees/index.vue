@@ -20,6 +20,7 @@
             size="small"
             type="primary"
             icon="el-icon-plus"
+            @click="showDialog = true"
           >新增员工</el-button>
         </template>
       </PageTools>
@@ -70,6 +71,8 @@
           @size-change="sizeChange"
         />
       </el-row>
+      <!-- 弹窗 -->
+      <AddEmployee :show-dialog="showDialog" />
     </div>
   </div>
 </template>
@@ -77,9 +80,14 @@
 <script>
 import { delEmployee, getEmployeesList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
+import AddEmployee from '@/views/employees/components/add-employee'
 export default {
+  components: {
+    AddEmployee
+  },
   data() {
     return {
+      showDialog: false,
       activeIndex: '1',
       employeesList: [],
       pageSetting: {
