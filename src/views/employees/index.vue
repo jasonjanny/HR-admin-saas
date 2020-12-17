@@ -142,9 +142,9 @@ export default {
     // 导出数据
     async exportData() {
       // 表头对应关系
-      const headers = {
-        '手机号': 'mobile',
+      const dictionary = {
         '姓名': 'username',
+        '手机号': 'mobile',
         '入职日期': 'timeOfEntry',
         '聘用形式': 'formOfEmployment',
         '转正日期': 'correctionTime',
@@ -158,8 +158,32 @@ export default {
       }
       // 懒加载
       const excel = await import('@/vendor/Export2Excel')
+      // 获取表头数据
+      const header = Object.keys(dictionary)
+      // console.log(header) ["姓名", "手机号", "入职日期", "聘用形式", "转正日期", "工号", "部门"]
+
       // 获取全部的表格数据
       const { rows } = await getEmployeesList(allPage)
+      console.log(rows)
+
+      const data = rows.map(item => {
+        // 数组
+        const array = []
+        // 遍历字典
+        for (const key in dictionary) {
+          const enKey = dictionary[key]
+          const enValue = item[enKey]
+          array.push(enValue)
+        }
+        return array
+      })
+
+      // 转换成excel导出
+      excel.export_json_to_excel({
+        header,
+        data,
+        filename: '员工信息表'
+      })
     }
   }
 }
