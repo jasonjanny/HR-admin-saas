@@ -77,7 +77,7 @@
         />
       </el-row>
       <!-- 弹窗 -->
-      <AddEmployee :show-dialog="showDialog" />
+      <AddEmployee :show-dialog="showDialog" :add-employee="getEmployeesList" />
     </div>
   </div>
 </template>

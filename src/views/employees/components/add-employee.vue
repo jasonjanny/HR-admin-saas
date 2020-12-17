@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="新增员工" :visible="showDialog">
     <!-- 表单 -->
-    <el-form label-width="120px" :model="formData" :rules="rules">
+    <el-form ref="addFrom" label-width="120px" :model="formData" :rules="rules">
       <el-form-item label="姓名" prop="username">
         <el-input
           v-model="formData.username"
@@ -28,7 +28,9 @@
           v-model="formData.formOfEmployment"
           style="width: 50%"
           placeholder="请选择"
-        />
+        >
+          <el-option v-for="item in EmploymentEnum.hireType" :key="item.id" :label="item.value" :value="item.id" />
+        </el-select>
       </el-form-item>
       <el-form-item label="工号" prop="workNumber">
         <el-input
@@ -44,7 +46,7 @@
           placeholder="请选择部门"
           @focus="getDepartments"
         />
-        <div v-if="showTree" class="treeWrapper">
+        <div v-if="treeData.length" class="treeWrapper">
           <el-tree
             class="treeDepartment"
             :data="treeData"
@@ -67,7 +69,7 @@
       <el-row type="flex" justify="center">
         <el-col :span="6">
           <el-button size="small">取消</el-button>
-          <el-button type="primary" size="small">确定</el-button>
+          <el-button type="primary" size="small" @click="btnOk">确定</el-button>
         </el-col>
       </el-row>
     </template>
@@ -77,6 +79,8 @@
 <script>
 import { getDepartments } from '@/api/departments'
 import { transListToTreeData } from '@/utils/index'
+import { addEmployee } from '@/api/employees'
+import EmploymentEnum from '@/api/constant/employees'
 export default {
   props: {
     showDialog: {
@@ -86,8 +90,7 @@ export default {
   },
   data() {
     return {
-      // 显示树形表单
-      showTree: false,
+      EmploymentEnum,
       // 树形数据
       treeData: [],
       // 表单数据
@@ -130,11 +133,22 @@ export default {
     async getDepartments() {
       const { depts } = await getDepartments()
       this.treeData = transListToTreeData(depts, '')
-      this.showTree = true
     },
     selectNode(node) {
       this.formData.departmentName = node.name
-      this.showTree = false
+      this.treeData = []
+    },
+    async btnOk() {
+      try {
+        await this.$refs.addFrom.validate()
+        await addEmployee(this.formData)
+        this.$emit('update:showDialog', false)
+        this.$emit('addEmployee')
+        // this.$parent.showDialog = false
+        // this.$parent.getEmployeesList()
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
