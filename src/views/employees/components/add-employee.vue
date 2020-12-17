@@ -160,9 +160,10 @@ export default {
         await this.$refs.addFrom.validate()
         await addEmployee(this.formData)
         this.$emit('update:showDialog', false)
-        this.$emit('addEmployee')
+        // this.$emit('addEmployee')
+        this.$message.success('员工新增成功')
         // this.$parent.showDialog = false
-        // this.$parent.getEmployeesList()
+        this.$parent.getEmployeesList()
       } catch (error) {
         console.log(error)
       }

@@ -77,7 +77,7 @@
         />
       </el-row>
       <!-- 弹窗 -->
-      <AddEmployee :show-dialog="showDialog" :add-employee="getEmployeesList" />
+      <AddEmployee :show-dialog.sync="showDialog" :add-employee="getEmployeesList" />
     </div>
   </div>
 </template>
@@ -132,7 +132,7 @@ export default {
           type: 'warning'
         })
         await delEmployee(id)
-        await getEmployeesList()
+        await this.getEmployeesList()
         this.$message.success('成功删除员工')
       } catch (error) {
         console.log(error)
