@@ -21,6 +21,7 @@
           v-model="formData.timeOfEntry"
           style="width: 50%"
           placeholder="请选择入职时间"
+          @change="checkTwoData"
         />
       </el-form-item>
       <el-form-item label="聘用形式" prop="formOfEmployment">
@@ -61,6 +62,7 @@
           v-model="formData.correctionTime"
           style="width: 50%"
           placeholder="请选择转正时间"
+          @change="checkTwoData"
         />
       </el-form-item>
     </el-form>
@@ -180,6 +182,10 @@ export default {
       }
       this.$refs.addFrom.resetFields() // 重置校验结果
       this.$emit('update:showDialog', false)
+    },
+    // 用户表单转正时间和入职时间的协作校验
+    checkTwoData() {
+      this.$refs.addFrom.validateField(['timeOfEntry', 'correctionTime'])
     }
   }
 }
