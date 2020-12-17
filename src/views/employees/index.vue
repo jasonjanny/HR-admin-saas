@@ -86,6 +86,7 @@
 import { delEmployee, getEmployeesList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
 import AddEmployee from '@/views/employees/components/add-employee'
+import { formatDate } from '@/filters'
 export default {
   components: {
     AddEmployee
@@ -172,7 +173,17 @@ export default {
         // 遍历字典
         for (const key in dictionary) {
           const enKey = dictionary[key]
-          const enValue = item[enKey]
+          let enValue = item[enKey]
+          // 额外处理时间和聘用形式
+          // 时间处理
+          if (enKey === 'timeOfEntry' || enKey === 'correctionTime') {
+            enValue = formatDate(enValue)
+          }
+          // 聘用形式处理
+          if (enKey === 'formOfEmployment') {
+            const obj = EmploymentEnum.hireType.find(item => item.id === enValue)
+            enValue = obj ? obj.value : '其他形式'
+          }
           array.push(enValue)
         }
         return array
