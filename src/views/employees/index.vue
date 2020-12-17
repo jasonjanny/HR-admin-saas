@@ -15,7 +15,7 @@
         <!-- 右侧 -->
         <template slot="after">
           <el-button size="small" type="warning" @click="$router.push('/import?type=employee')">导入</el-button>
-          <el-button size="small" type="danger">导出</el-button>
+          <el-button size="small" type="danger" @click="exportData">导出</el-button>
           <el-button
             size="small"
             type="primary"
@@ -137,6 +137,29 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+
+    // 导出数据
+    async exportData() {
+      // 表头对应关系
+      const headers = {
+        '手机号': 'mobile',
+        '姓名': 'username',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
+      // 全部的表格数据
+      const allPage = {
+        page: 1,
+        size: this.total
+      }
+      // 懒加载
+      const excel = await import('@/vendor/Export2Excel')
+      // 获取全部的表格数据
+      const { rows } = await getEmployeesList(allPage)
     }
   }
 }
