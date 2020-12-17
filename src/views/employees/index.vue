@@ -45,7 +45,7 @@
         <el-table-column label="部门" sortable="" prop="departmentName" />
         <el-table-column label="入职时间" sortable="">
           <template slot-scope="{ row }">
-            {{ row.timeOfEntry | getNowFormatDate }}
+            {{ row.timeOfEntry | formatDate }}
           </template>
         </el-table-column>
         <el-table-column label="账户状态" sortable="" prop="enableState">
