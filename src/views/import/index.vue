@@ -39,10 +39,14 @@ export default {
         return newItem
       })
       //   console.log(newData)
-
-      // 发送导入员工请求
-      await importEmployee(newData)
+      if (this.$route.query.type === 'employee') {
+        // 发送导入员工请求
+        await importEmployee(newData)
+      }
       this.$message.success('员工导入成功')
+      setTimeout(() => {
+        this.$router.back()
+      }, 800)
     },
     // 专用于导入时间后的时间处理
     formatDate(numb, format) {

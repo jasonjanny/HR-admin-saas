@@ -14,7 +14,7 @@
         <span slot="before">111</span>
         <!-- 右侧 -->
         <template slot="after">
-          <el-button size="small" type="warning">导入</el-button>
+          <el-button size="small" type="warning" @click="$router.push('/import?type=employee')">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
           <el-button
             size="small"
