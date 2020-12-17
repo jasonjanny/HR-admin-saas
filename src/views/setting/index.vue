@@ -291,7 +291,7 @@ export default {
       this.showDialog = false
     },
     // 当前页面变更
-    crrentChange(newPage) {
+    currentChange(newPage) {
       this.pageSetting.page = newPage
       this.getRoleList()
     },
