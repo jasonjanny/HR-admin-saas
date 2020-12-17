@@ -89,6 +89,15 @@ export default {
     }
   },
   data() {
+    const checkTime = (rule, value, callback) => {
+      if (!this.formData.timeOfEntry || !this.formData.correctionTime) {
+        callback()
+      } else {
+        const entryTime = this.formData.timeOfEntry.getTime()
+        const correctionTime = this.formData.correctionTime.getTime()
+        correctionTime > entryTime ? callback() : callback(new Error('入职之前不能转正'))
+      }
+    }
     return {
       EmploymentEnum,
       // 树形数据
@@ -125,7 +134,15 @@ export default {
         departmentName: [
           { required: true, message: '部门不能为空', trigger: 'change' }
         ],
-        timeOfEntry: [{ required: true, message: '入职时间', trigger: 'blur' }]
+        timeOfEntry: [
+          { required: true, message: '入职时间', trigger: 'blur' },
+          { trigger: 'change', validator: checkTime },
+          { trigger: 'blur', validator: checkTime }
+        ],
+        correctionTime: [
+          { trigger: 'change', validator: checkTime },
+          { trigger: 'blur', validator: checkTime }
+        ]
       }
     }
   },
