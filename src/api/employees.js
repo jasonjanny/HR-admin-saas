@@ -40,3 +40,12 @@ export function importEmployee(data) {
     data
   })
 }
+
+// 保存员工基本信息
+export function saveUserDetailById(data) {
+  return request({
+    method: 'put',
+    url: '/sys/user/' + data.id,
+    data
+  })
+}
