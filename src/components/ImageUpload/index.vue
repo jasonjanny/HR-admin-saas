@@ -6,6 +6,8 @@
       :file-list="fileList"
       :on-preview="preview"
       :on-remove="handleRemove"
+      :on-change="handleChange"
+      :before-upload="beforeUpload"
       :class="{disable:fileUpload }"
     >
       <i class="el-icon-plus" />
@@ -43,6 +45,25 @@ export default {
     },
     handleRemove(file, fileList) {
       this.fileList = [...fileList]
+    },
+    handleChange(file, fileList) {
+      this.fileList = [...fileList]
+    },
+    beforeUpload(file) {
+      // 要开始做文件上传的检查了
+      // 文件类型 文件大小
+      const types = ['image/jpeg', 'image/gif', 'image/bmp', 'image/png']
+      if (!types.includes(file.type)) {
+        this.$message.error('上传图片只能是 JPG、GIF、BMP、PNG 格式!')
+        return false
+      }
+      //  检查大小
+      const maxSize = 2 * 1024 * 1024
+      if (maxSize < file.size) {
+        this.$message.error('图片大小最大不能超过2M')
+        return false
+      }
+      return true
     }
   }
 }
@@ -52,9 +73,9 @@ export default {
  ::v-deep .disable .el-upload--picture-card {
   display: none
 }
-::v-deep.upload{
-     img{
-        object-fit: cover;
+ .uploader {
+    ::v-deep img{
+        object-fit: cover
     }
 }
 </style>
