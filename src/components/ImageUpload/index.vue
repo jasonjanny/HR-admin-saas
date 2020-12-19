@@ -8,17 +8,22 @@
       :on-remove="handleRemove"
       :on-change="handleChange"
       :before-upload="beforeUpload"
+      :http-request="upload"
       :class="{disable:fileUpload }"
     >
       <i class="el-icon-plus" />
     </el-upload>
     <el-dialog title="图片预览" :visible.sync="showDialog">
-      <img :src="imgUrl" alt="" style="width:100%;">
+      <img :src="imgUrl" alt="" style="width:100%">
     </el-dialog>
   </div>
 </template>
 
 <script>
+import COS from 'cos-js-sdk-v5' // 引入腾讯云的包
+import { cloundKey } from '@/config-cos'
+// 实例化
+const cos = new COS(cloundKey)
 export default {
   data() {
     return {
@@ -64,6 +69,24 @@ export default {
         return false
       }
       return true
+    },
+    upload(params) {
+      console.log(params)
+      // 上传文件到腾讯云
+      cos.putObject({
+        // 配置
+        Bucket: 'moonlight-1304560084', // 存储桶名称
+        Region: 'ap-guangzhou', // 存储桶地域
+        Key: params.file.name, // 文件名作为key
+        StorageClass: 'STANDARD', // 此类写死
+        Body: params.file // 将本地的文件赋值给腾讯云配置
+        // 进度条
+        // onProgress: (params) => {
+        //   this.percent = params.percent * 100
+        // }
+      }, function(err, data) {
+        console.log(err || data)
+      })
     }
   }
 }
