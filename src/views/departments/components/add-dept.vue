@@ -52,7 +52,7 @@ export default {
       const { depts } = await getDepartments()
       if (this.formdata.id) {
         // 编辑
-        depts.some(item => item.id !== this.formdata.id && item.name === value && item.pid === this.data.id) ? callback(new Error('同一部门下不能出现重复名称')) : callback()
+        depts.some(item => item.id !== this.formdata.id && item.name === value && item.pid === this.data.pid) ? callback(new Error('同一部门下不能出现重复名称')) : callback()
       } else {
         // 新增
         depts.some(item => item.name === value && item.pid === this.data.id) ? callback(new Error('同一部门下不能出现重复名称')) : callback()
