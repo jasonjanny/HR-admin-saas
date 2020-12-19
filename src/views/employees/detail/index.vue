@@ -5,7 +5,7 @@
         <el-tabs>
           <el-tab-pane label="登录账户设置">
             <!-- 放置表单 -->
-            <el-form label-width="120px" style="margin-left: 120px; margin-top:30px">
+            <el-form label-width="120px" style="margin-left: 200px; margin-top:30px">
               <el-form-item label="姓名:">
                 <el-input style="width:300px" />
               </el-form-item>
