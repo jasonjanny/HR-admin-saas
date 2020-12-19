@@ -27,6 +27,7 @@ const cos = new COS(cloundKey)
 export default {
   data() {
     return {
+      currentUid: '',
       showDialog: false,
       imgUrl: '',
       fileList: [
@@ -68,10 +69,11 @@ export default {
         this.$message.error('图片大小最大不能超过2M')
         return false
       }
+      // 记住当前的uid
+      this.currentUid = file.uid
       return true
     },
     upload(params) {
-      console.log(params)
       // 上传文件到腾讯云
       cos.putObject({
         // 配置
@@ -84,8 +86,19 @@ export default {
         // onProgress: (params) => {
         //   this.percent = params.percent * 100
         // }
-      }, function(err, data) {
-        console.log(err || data)
+      }, (err, data) => {
+        // 需要判断错误与成功
+        if (!err && data.statusCode === 200) {
+          // 如果没有失败表示成功了
+          // 此时认为上传成功了
+          this.fileList = this.fileList.map(item => {
+            if (item.uid === this.currentUid) {
+              // upload为true表示 该图片已经成功上传到服务器，地址已经是腾讯云的地址了  就不可以执行保存了
+              return { url: 'http://' + data.Location, upload: true } // 将本地的地址换成腾讯云地址
+            }
+            return item
+          })
+        }
       })
     }
   }
