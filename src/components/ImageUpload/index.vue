@@ -13,6 +13,7 @@
     >
       <i class="el-icon-plus" />
     </el-upload>
+    <el-progress v-if="showPercent" :percentage="percent" style="width: 180px" />
     <el-dialog title="图片预览" :visible.sync="showDialog">
       <img :src="imgUrl" alt="" style="width:100%">
     </el-dialog>
@@ -28,6 +29,8 @@ export default {
   data() {
     return {
       currentUid: '',
+      percent: 0,
+      showPercent: false,
       showDialog: false,
       imgUrl: '',
       fileList: [
@@ -71,6 +74,7 @@ export default {
       }
       // 记住当前的uid
       this.currentUid = file.uid
+      this.showPercent = true
       return true
     },
     upload(params) {
@@ -81,11 +85,11 @@ export default {
         Region: 'ap-guangzhou', // 存储桶地域
         Key: params.file.name, // 文件名作为key
         StorageClass: 'STANDARD', // 此类写死
-        Body: params.file // 将本地的文件赋值给腾讯云配置
+        Body: params.file, // 将本地的文件赋值给腾讯云配置
         // 进度条
-        // onProgress: (params) => {
-        //   this.percent = params.percent * 100
-        // }
+        onProgress: (params) => {
+          this.percent = Math.ceil(params.percent * 100)
+        }
       }, (err, data) => {
         // 需要判断错误与成功
         if (!err && data.statusCode === 200) {
@@ -98,6 +102,7 @@ export default {
             }
             return item
           })
+          this.showPercent = false
         }
       })
     }
