@@ -19,7 +19,7 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="个人详情" name="detail">
-            222
+            <UserInfo />
           </el-tab-pane>
           <el-tab-pane label="岗位信息" name="job">
             333
@@ -31,9 +31,13 @@
 </template>
 
 <script>
+import UserInfo from '@/views/employees/components/user-info'
 import { getUserDetailById } from '@/api/user'
 import { saveUserDetailById } from '@/api/employees'
 export default {
+  components: {
+    UserInfo
+  },
   data() {
     return {
       userId: this.$route.params.id,
@@ -59,7 +63,7 @@ export default {
     async getUserDetailById() {
       const data = await getUserDetailById(this.userId)
       this.formData = data
-      console.log(data)
+      // console.log(data)
     },
     async updateAccount() {
       try {
