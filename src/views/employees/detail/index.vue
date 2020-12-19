@@ -7,10 +7,10 @@
             <!-- 放置表单 -->
             <el-form label-width="120px" style="margin-left: 200px; margin-top:30px">
               <el-form-item label="姓名:">
-                <el-input style="width:300px" />
+                <el-input v-model="formData.username" style="width:300px" />
               </el-form-item>
               <el-form-item label="密码:">
-                <el-input style="width:300px" type="password" />
+                <el-input v-model="formData.newPassword" style="width:300px" type="password" />
               </el-form-item>
               <el-form-item>
                 <el-button type="primary">更新</el-button>
@@ -31,7 +31,27 @@
 </template>
 
 <script>
-export default {}
+import { getUserDetailById } from '@/api/user'
+export default {
+  data() {
+    return {
+      userId: this.$route.params.id,
+      formData: {
+        username: '',
+        newPassword: ''
+      }
+    }
+  },
+  created() {
+    this.getUserDetailById()
+  },
+  methods: {
+    async getUserDetailById() {
+      const data = await getUserDetailById(this.userId)
+      this.formData = data
+    }
+  }
+}
 </script>
 
 <style>
