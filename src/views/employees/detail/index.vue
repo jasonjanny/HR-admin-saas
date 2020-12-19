@@ -19,7 +19,7 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="个人详情" name="detail">
-            <UserInfo />
+            <component :is="userInfoName" />
           </el-tab-pane>
           <el-tab-pane label="岗位信息" name="job">
             333
@@ -40,6 +40,7 @@ export default {
   },
   data() {
     return {
+      userInfoName: 'UserInfo',
       userId: this.$route.params.id,
       formData: {
         username: '',
