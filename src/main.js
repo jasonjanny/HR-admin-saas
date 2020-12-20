@@ -23,6 +23,10 @@ Vue.use(ElementUI)
 import Component from '@/components'
 Vue.use(Component)
 
+// 注册打印插件
+import Print from 'vue-print-nb'
+Vue.use(Print)
+
 // 注册自定义指令
 import * as directives from '@/directives'
 // 遍历所有导出的自定义指令对象，完成自定义全局注册
