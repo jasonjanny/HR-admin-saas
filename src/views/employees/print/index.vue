@@ -2,13 +2,26 @@
   <div id="myPrint" class="dashboard-container">
     <div class="app-container">
       <el-card>
-        <el-breadcrumb separator="/" class="titInfo ">
+        <el-breadcrumb separator="/" class="titInfo">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>
-            <router-link :to="{'path':'/employees'}">员工管理</router-link>
+            <router-link :to="{ path: '/employees' }">员工管理</router-link>
           </el-breadcrumb-item>
           <el-breadcrumb-item>打印</el-breadcrumb-item>
         </el-breadcrumb>
+        <el-row
+          type="flex"
+          justify="end"
+          align="middle"
+          style="height: 60px"
+          class="printBtn"
+        >
+          <el-button
+            type="primary"
+            style="height: 40px"
+            @click="startPrint"
+          >打印</el-button>
+        </el-row>
         <div v-if="type === 'personal'">
           <h2 class="centInfo">员工信息表</h2>
           <table cellspacing="0" width="100%" class="tableList">
@@ -16,10 +29,14 @@
               <td colspan="8" class="centInfo">基本信息</td>
             </tr>
             <tr>
-              <th style="width:10%">姓名</th>
-              <td colspan="6" style="width:80%">{{ formData.username }}</td>
-              <td rowspan="5" style="width:10%"><img style="width:155px;height:218px" :src="formData.staffPhoto"></td>
-
+              <th style="width: 10%">姓名</th>
+              <td colspan="6" style="width: 80%">{{ formData.username }}</td>
+              <td rowspan="5" style="width: 10%">
+                <img
+                  style="width: 155px; height: 218px"
+                  :src="formData.staffPhoto"
+                >
+              </td>
             </tr>
             <tr>
               <th>性别</th>
@@ -38,10 +55,12 @@
               <td colspan="6">{{ formData.theHighestDegreeOfEducation }}</td>
             </tr>
             <tr>
-              <th style="width:10%">是否可编辑</th>
-              <td style="width:35%">{{ formData.isItEditable }}</td>
-              <th style="width:10%">是否隐藏号码</th>
-              <td colspan="5" style="width:45%">{{ formData.doYouHideNumbers }}</td>
+              <th style="width: 10%">是否可编辑</th>
+              <td style="width: 35%">{{ formData.isItEditable }}</td>
+              <th style="width: 10%">是否隐藏号码</th>
+              <td colspan="5" style="width: 45%">
+                {{ formData.doYouHideNumbers }}
+              </td>
             </tr>
             <tr>
               <th>国家地区</th>
@@ -101,13 +120,17 @@
               <th>子女状态</th>
               <td>{{ formData.stateOfChildren }}</td>
               <th>子女有无商业保险</th>
-              <td colspan="5">{{ formData.doChildrenHaveCommercialInsurance }}</td>
+              <td colspan="5">
+                {{ formData.doChildrenHaveCommercialInsurance }}
+              </td>
             </tr>
             <tr>
               <th>有无违法违纪行为</th>
               <td>{{ formData.isThereAnyViolationOfLawOrDiscipline }}</td>
               <th>有无重大病史</th>
-              <td colspan="5">{{ formData.areThereAnyMajorMedicalHistories }}</td>
+              <td colspan="5">
+                {{ formData.areThereAnyMajorMedicalHistories }}
+              </td>
             </tr>
             <tr class="title">
               <td colspan="8" class="centInfo">通讯信息</td>
@@ -199,7 +222,9 @@
               <th>简历</th>
               <td>{{ formData.resume }}</td>
               <th>有无竞业限制</th>
-              <td colspan="5">{{ formData.isThereAnyCompetitionRestriction }}</td>
+              <td colspan="5">
+                {{ formData.isThereAnyCompetitionRestriction }}
+              </td>
             </tr>
             <tr>
               <th>前公司离职证明</th>
@@ -217,10 +242,10 @@
               <td colspan="4" class="centInfo">基本信息</td>
             </tr>
             <tr>
-              <th style="width:10%">姓名</th>
-              <td style="width:40%">{{ formData.username }}</td>
-              <th style="width:10%">入职日期</th>
-              <td style="width:40%">{{ formData.dateOfEntry }}</td>
+              <th style="width: 10%">姓名</th>
+              <td style="width: 40%">{{ formData.username }}</td>
+              <th style="width: 10%">入职日期</th>
+              <td style="width: 40%">{{ formData.dateOfEntry }}</td>
             </tr>
             <tr>
               <th>部门</th>
@@ -351,6 +376,9 @@ export default {
       const userInfo = await getUserDetailById(this.userId)
       const jobInfo = await getJobDetail(this.userId) // 获取个人基本信息
       this.formData = { ...userInfo, ...jobInfo }
+    },
+    startPrint() {
+      window.print()
     }
   }
 }
@@ -360,5 +388,16 @@ export default {
 .foot {
   padding: 30px 0;
   text-align: right;
+}
+
+@media print {
+  .sidebar-container,
+  .navbar,
+  .printBtn {
+    display: none;
+  }
+  #app .main-container {
+    margin-left: 0;
+  }
 }
 </style>
