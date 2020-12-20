@@ -156,10 +156,10 @@ export default {
     this.getEmployeesList()
   },
   methods: {
-    editRole(userId) {
+    async editRole(userId) {
       this.userId = userId
+      await this.$refs.userId.getRoleDetailById(userId)
       this.showRoleDialog = true
-      this.$refs.userId.getRoleDetailById(userId)
     },
     showCode(url) {
       this.showCodeDialog = true
