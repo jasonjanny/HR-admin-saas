@@ -89,7 +89,7 @@
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
-            <el-button type="text" size="small">角色</el-button>
+            <el-button type="text" size="small" @click="editRole">角色</el-button>
             <el-button
               type="text"
               size="small"
@@ -119,22 +119,26 @@
           <canvas ref="myCanvas" />
         </el-row>
       </el-dialog>
+      <AssignRole :show-role-dialog.sync="showRoleDialog" />
     </div>
   </div>
 </template>
 
 <script>
-import { delEmployee, getEmployeesList } from '@/api/employees'
-import EmploymentEnum from '@/api/constant/employees'
-import AddEmployee from '@/views/employees/components/add-employee'
-import { formatDate } from '@/filters'
 import QrCode from 'qrcode'
+import { formatDate } from '@/filters'
+import EmploymentEnum from '@/api/constant/employees'
+import { delEmployee, getEmployeesList } from '@/api/employees'
+import AddEmployee from './components/add-employee'
+import AssignRole from './components/assign-role'
 export default {
   components: {
-    AddEmployee
+    AddEmployee,
+    AssignRole
   },
   data() {
     return {
+      showRoleDialog: false,
       imageUrl: '',
       showCodeDialog: false,
       showDialog: false,
@@ -151,6 +155,9 @@ export default {
     this.getEmployeesList()
   },
   methods: {
+    editRole() {
+      this.showRoleDialog = true
+    },
     showCode(url) {
       this.showCodeDialog = true
       this.imageUrl = url
