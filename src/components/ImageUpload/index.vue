@@ -33,12 +33,7 @@ export default {
       showPercent: false,
       showDialog: false,
       imgUrl: '',
-      fileList: [
-        {
-          url:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608375786527&di=8318ac46843cc7e772831c1cc6a03f62&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20160311%2Fmp62970613_1457663723054_6.jpeg'
-        }
-      ]
+      fileList: []
     }
   },
   computed: {
