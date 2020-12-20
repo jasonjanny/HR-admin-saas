@@ -14,8 +14,16 @@
         <span slot="before">111</span>
         <!-- 右侧 -->
         <template slot="after">
-          <el-button size="small" type="warning" @click="$router.push('/import?type=employee')">导入</el-button>
-          <el-button size="small" type="danger" @click="exportData">导出</el-button>
+          <el-button
+            size="small"
+            type="warning"
+            @click="$router.push('/import?type=employee')"
+          >导入</el-button>
+          <el-button
+            size="small"
+            type="danger"
+            @click="exportData"
+          >导出</el-button>
           <el-button
             size="small"
             type="primary"
@@ -36,13 +44,19 @@
         </el-table-column>
         <el-table-column label="姓名" sortable="" prop="username" />
         <el-table-column label="头像" align="center" width="100px">
-          <template slot-scope="{row}">
+          <template slot-scope="{ row }">
             <img
               slot="reference"
               v-imageerror="require('@/assets/common/bigUserHeader.png')"
-              :src="row.staffPhoto "
-              style="border-radius: 50%; width: 80px; height: 80px; padding: 10px"
+              :src="row.staffPhoto"
+              style="
+                border-radius: 50%;
+                width: 80px;
+                height: 80px;
+                padding: 10px;
+              "
               alt=""
+              @click="row.staffPhoto?showCodeDialog=true:showCodeDialog=false"
             >
           </template>
         </el-table-column>
@@ -66,13 +80,21 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" sortable="" fixed="right" width="280">
-          <template slot-scope="{row}">
-            <el-button type="text" size="small" @click="$router.push('/employees/detail/' + row.id)">查看</el-button>
+          <template slot-scope="{ row }">
+            <el-button
+              type="text"
+              size="small"
+              @click="$router.push('/employees/detail/' + row.id)"
+            >查看</el-button>
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
             <el-button type="text" size="small">角色</el-button>
-            <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="delEmployee(row.id)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -88,7 +110,11 @@
         />
       </el-row>
       <!-- 弹窗 -->
-      <AddEmployee :show-dialog.sync="showDialog" :add-employee="getEmployeesList" />
+      <AddEmployee
+        :show-dialog.sync="showDialog"
+        :add-employee="getEmployeesList"
+      />
+      <el-dialog title="二维码" :visible.sync="showCodeDialog" />
     </div>
   </div>
 </template>
@@ -104,6 +130,7 @@ export default {
   },
   data() {
     return {
+      showCodeDialog: false,
       showDialog: false,
       activeIndex: '1',
       employeesList: [],
@@ -155,13 +182,13 @@ export default {
     async exportData() {
       // 表头对应关系
       const dictionary = {
-        '姓名': 'username',
-        '手机号': 'mobile',
-        '入职日期': 'timeOfEntry',
-        '聘用形式': 'formOfEmployment',
-        '转正日期': 'correctionTime',
-        '工号': 'workNumber',
-        '部门': 'departmentName'
+        姓名: 'username',
+        手机号: 'mobile',
+        入职日期: 'timeOfEntry',
+        聘用形式: 'formOfEmployment',
+        转正日期: 'correctionTime',
+        工号: 'workNumber',
+        部门: 'departmentName'
       }
       // 全部的表格数据
       const allPage = {
@@ -178,7 +205,7 @@ export default {
       const { rows } = await getEmployeesList(allPage)
       console.log(rows)
 
-      const data = rows.map(item => {
+      const data = rows.map((item) => {
         // 数组
         const array = []
         // 遍历字典
@@ -192,7 +219,9 @@ export default {
           }
           // 聘用形式处理
           if (enKey === 'formOfEmployment') {
-            const obj = EmploymentEnum.hireType.find(item => item.id === enValue)
+            const obj = EmploymentEnum.hireType.find(
+              (item) => item.id === enValue
+            )
             enValue = obj ? obj.value : '其他形式'
           }
           array.push(enValue)
