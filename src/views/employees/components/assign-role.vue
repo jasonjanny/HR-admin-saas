@@ -9,7 +9,7 @@
       </el-checkbox-group>
       <el-row slot="footer" type="flex" justify="center">
         <el-col :span="6">
-          <el-button type="primary" size="small">确定</el-button>
+          <el-button type="primary" size="small" @click="btnOk">确定</el-button>
           <el-button size="small" @click="btnCancel">取消</el-button>
         </el-col>
       </el-row>
@@ -20,11 +20,16 @@
 <script>
 import { getRoleList } from '@/api/setting'
 import { getUserDetailById } from '@/api/user'
+import { assignRoles } from '@/api/employees'
 export default {
   props: {
     showRoleDialog: {
       type: Boolean,
       default: false
+    },
+    userId: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -44,6 +49,11 @@ export default {
     async getRoleDetailById(id) {
       const { roleIds } = await getUserDetailById(id)
       this.roleIds = roleIds
+    },
+    async btnOk() {
+      await assignRoles({ roleIds: this.roleIds, id: this.userId })
+      this.$message.success('修改成功')
+      this.$emit('update:showRoleDialog', false)
     },
     btnCancel() {
       this.$emit('update:showRoleDialog', false)

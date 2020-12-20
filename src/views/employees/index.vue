@@ -119,7 +119,7 @@
           <canvas ref="myCanvas" />
         </el-row>
       </el-dialog>
-      <AssignRole ref="userId" :show-role-dialog.sync="showRoleDialog" />
+      <AssignRole ref="userId" :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
     </div>
   </div>
 </template>
