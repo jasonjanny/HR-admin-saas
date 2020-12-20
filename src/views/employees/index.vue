@@ -89,7 +89,7 @@
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
-            <el-button type="text" size="small" @click="editRole">角色</el-button>
+            <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
             <el-button
               type="text"
               size="small"
@@ -119,7 +119,7 @@
           <canvas ref="myCanvas" />
         </el-row>
       </el-dialog>
-      <AssignRole :show-role-dialog.sync="showRoleDialog" />
+      <AssignRole ref="userId" :show-role-dialog.sync="showRoleDialog" />
     </div>
   </div>
 </template>
@@ -138,6 +138,7 @@ export default {
   },
   data() {
     return {
+      userId: '',
       showRoleDialog: false,
       imageUrl: '',
       showCodeDialog: false,
@@ -155,8 +156,10 @@ export default {
     this.getEmployeesList()
   },
   methods: {
-    editRole() {
+    editRole(userId) {
+      this.userId = userId
       this.showRoleDialog = true
+      this.$refs.userId.getRoleDetailById(userId)
     },
     showCode(url) {
       this.showCodeDialog = true
