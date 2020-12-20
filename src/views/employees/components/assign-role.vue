@@ -34,18 +34,20 @@ export default {
   },
   data() {
     return {
-      list: [],
-      roleIds: []
+      list: [], // 角色列表
+      roleIds: [] // 用户的角色
     }
   },
   created() {
     this.getRoleList()
   },
   methods: {
+    // 获取角色列表
     async getRoleList() {
       const { rows } = await getRoleList()
       this.list = rows
     },
+    // 获取用户的角色信息
     async getRoleDetailById(id) {
       const { roleIds } = await getUserDetailById(id)
       this.roleIds = roleIds

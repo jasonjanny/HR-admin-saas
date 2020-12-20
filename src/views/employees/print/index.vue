@@ -9,6 +9,7 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item>打印</el-breadcrumb-item>
         </el-breadcrumb>
+        <!-- 打印按钮 -->
         <el-row
           type="flex"
           justify="end"
@@ -364,7 +365,7 @@ export default {
         id: 'myPrint'
       },
       formData: {},
-      userId: this.$route.params.id,
+      userId: this.$route.params.id, // 用户id
       type: this.$route.query.type // 打印类型
     }
   },
@@ -374,12 +375,14 @@ export default {
   },
   // 组件更新
   methods: {
+    // 获取基本信息
     async getPersonalDetail() {
-      this.formData = await getPersonalDetail(this.userId) // 获取个人基本信息
+      this.formData = await getPersonalDetail(this.userId)
     },
+    // 获取岗位信息
     async getJobDetail() {
       const userInfo = await getUserDetailById(this.userId)
-      const jobInfo = await getJobDetail(this.userId) // 获取个人基本信息
+      const jobInfo = await getJobDetail(this.userId)
       this.formData = { ...userInfo, ...jobInfo }
     }
   }

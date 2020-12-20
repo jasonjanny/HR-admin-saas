@@ -109,11 +109,12 @@
           @size-change="sizeChange"
         />
       </el-row>
-      <!-- 弹窗 -->
+      <!-- 新增员工弹窗 -->
       <AddEmployee
         :show-dialog.sync="showDialog"
         :add-employee="getEmployeesList"
       />
+      <!-- 二维码弹窗 -->
       <el-dialog title="二维码" :visible.sync="showCodeDialog" @opened="showQRCode">
         <el-row type="flex" justify="center">
           <canvas ref="myCanvas" />
