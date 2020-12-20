@@ -114,7 +114,11 @@
         :show-dialog.sync="showDialog"
         :add-employee="getEmployeesList"
       />
-      <el-dialog title="二维码" :visible.sync="showCodeDialog" />
+      <el-dialog title="二维码" :visible.sync="showCodeDialog" @opened="showQRCode">
+        <el-row type="flex" justify="center">
+          <canvas ref="myCanvas" />
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -124,6 +128,7 @@ import { delEmployee, getEmployeesList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
 import AddEmployee from '@/views/employees/components/add-employee'
 import { formatDate } from '@/filters'
+import QrCode from 'qrcode'
 export default {
   components: {
     AddEmployee
@@ -149,6 +154,11 @@ export default {
     showCode(url) {
       this.showCodeDialog = true
       this.imageUrl = url
+    },
+    showQRCode() {
+      // 转换并显示二维码
+      // QrCode.toCanvas(dom, info)
+      QrCode.toCanvas(this.$refs.myCanvas, this.imageUrl)
     },
     // 获取员工列表
     async getEmployeesList() {
