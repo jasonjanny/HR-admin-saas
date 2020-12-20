@@ -56,7 +56,7 @@
                 padding: 10px;
               "
               alt=""
-              @click="row.staffPhoto?showCodeDialog=true:showCodeDialog=false"
+              @click="row.staffPhoto?showCode(row.staffPhoto):showCodeDialog=false"
             >
           </template>
         </el-table-column>
@@ -130,6 +130,7 @@ export default {
   },
   data() {
     return {
+      imageUrl: '',
       showCodeDialog: false,
       showDialog: false,
       activeIndex: '1',
@@ -145,6 +146,10 @@ export default {
     this.getEmployeesList()
   },
   methods: {
+    showCode(url) {
+      this.showCodeDialog = true
+      this.imageUrl = url
+    },
     // 获取员工列表
     async getEmployeesList() {
       const { rows, total } = await getEmployeesList(this.pageSetting)
