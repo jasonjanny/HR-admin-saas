@@ -144,16 +144,15 @@
         </el-tabs>
       </el-card>
       <!-- 权限弹窗 -->
-      <el-dialog
-        title="分配权限"
-        :visible.sync="showPerDialog"
-      >
+      <el-dialog title="分配权限" :visible.sync="showPerDialog">
         <el-tree
           :data="perList"
-          :props="{label:'name'}"
+          :props="{ label: 'name' }"
           :show-checkbox="true"
           :check-strictly="true"
           default-expand-all
+          node-key="id"
+          :default-checked-keys="selectCheck"
         />
         <div slot="footer">
           <el-button>取消</el-button>
@@ -182,6 +181,7 @@ export default {
       showDialog: false,
       showPerDialog: false,
       perList: {},
+      selectCheck: [],
       rules: {
         name: [
           {
@@ -328,6 +328,9 @@ export default {
     },
     async editPer(id) {
       const data = await getPermissionList(id)
+
+      const { permIds } = await getRoleDetail(id)
+      this.selectCheck = permIds
       this.perList = transListToTreeData(data, '0')
       this.showPerDialog = true
     }
