@@ -146,6 +146,7 @@
       <!-- 权限弹窗 -->
       <el-dialog title="分配权限" :visible.sync="showPerDialog">
         <el-tree
+          ref="perTree"
           :data="perList"
           :props="{ label: 'name' }"
           :show-checkbox="true"
@@ -155,8 +156,8 @@
           :default-checked-keys="selectCheck"
         />
         <div slot="footer">
-          <el-button>取消</el-button>
-          <el-button type="primary">确定</el-button>
+          <el-button @click="perBtnCancel">取消</el-button>
+          <el-button type="primary" @click="perBtnOk">确定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -166,6 +167,7 @@
 <script>
 import {
   addRole,
+  assignPerm,
   delRole,
   editRole,
   getCompanyInfo,
@@ -182,6 +184,7 @@ export default {
       showPerDialog: false,
       perList: {},
       selectCheck: [],
+      roleId: '',
       rules: {
         name: [
           {
@@ -327,12 +330,24 @@ export default {
       this.getRoleList()
     },
     async editPer(id) {
+      this.roleId = id
+      // 获取权限列表
       const data = await getPermissionList(id)
-
+      // 获取角色详情
       const { permIds } = await getRoleDetail(id)
       this.selectCheck = permIds
       this.perList = transListToTreeData(data, '0')
       this.showPerDialog = true
+    },
+    async perBtnOk() {
+      // 当前选中角色的id
+      const id = this.roleId
+      // 修改后的权限数组
+      const permIds = this.$refs.perTree.getCheckedKeys()
+      const data = { id, permIds }
+      await assignPerm(data)
+      this.$message.success('修改成功')
+      this.showPerDialog = false
     }
   }
 }
