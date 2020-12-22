@@ -17,10 +17,10 @@
       <!-- 主要内容 -->
       <el-card>
         <!-- 表格 -->
-        <el-table border>
-          <el-table-column align="center" label="名称" />
-          <el-table-column align="center" label="标识" />
-          <el-table-column align="center" label="描述" />
+        <el-table border :data="permissionList">
+          <el-table-column align="center" label="名称" prop="name" />
+          <el-table-column align="center" label="标识" prop="code" />
+          <el-table-column align="center" label="描述" prop="description" />
           <el-table-column align="center" label="操作">
             <template>
               <el-button type="text">添加</el-button>
@@ -35,10 +35,22 @@
 </template>
 
 <script>
+import { getPermissionList } from '@/api/permission'
+import { transListToTreeData } from '@/utils/index'
 export default {
   data() {
     return {
-      activeIndex: '1'
+      activeIndex: '1',
+      permissionList: []
+    }
+  },
+  created() {
+    this.getPermissionList()
+  },
+  methods: {
+    async getPermissionList() {
+      const data = await getPermissionList()
+      this.permissionList = transListToTreeData(data, '0')
     }
   }
 }
