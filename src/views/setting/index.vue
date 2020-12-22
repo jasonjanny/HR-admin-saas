@@ -35,6 +35,11 @@
                   <el-button
                     size="small"
                     type="primary"
+                    @click="editPer(row.id)"
+                  >分配权限</el-button>
+                  <el-button
+                    size="small"
+                    type="primary"
                     @click="editRole(row.id)"
                   >编辑</el-button>
                   <el-button
@@ -138,6 +143,23 @@
           </el-tab-pane>
         </el-tabs>
       </el-card>
+      <!-- 权限弹窗 -->
+      <el-dialog
+        title="分配权限"
+        :visible.sync="showPerDialog"
+      >
+        <el-tree
+          :data="perList"
+          :props="{label:'name'}"
+          :show-checkbox="true"
+          :check-strictly="true"
+          default-expand-all
+        />
+        <div slot="footer">
+          <el-button>取消</el-button>
+          <el-button type="primary">确定</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -152,10 +174,14 @@ import {
   getRoleList
 } from '@/api/setting'
 import { mapGetters } from 'vuex'
+import { getPermissionList } from '@/api/permission'
+import { transListToTreeData } from '@/utils'
 export default {
   data() {
     return {
       showDialog: false,
+      showPerDialog: false,
+      perList: {},
       rules: {
         name: [
           {
@@ -299,6 +325,11 @@ export default {
     sizeChange(newPagesize) {
       this.pageSetting.pagesize = newPagesize
       this.getRoleList()
+    },
+    async editPer(id) {
+      const data = await getPermissionList(id)
+      this.perList = transListToTreeData(data, '0')
+      this.showPerDialog = true
     }
   }
 }
