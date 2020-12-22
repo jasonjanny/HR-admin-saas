@@ -11,7 +11,7 @@
       <!-- 头部工具 -->
       <pageTools>
         <template slot="after">
-          <el-button type="primary" icon="el-icon-plus" @click="addPermission">新增权限</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="addPermission(1,'0')">新增权限</el-button>
         </template>
       </pageTools>
       <!-- 主要内容 -->
@@ -22,8 +22,8 @@
           <el-table-column align="center" label="标识" prop="code" />
           <el-table-column align="center" label="描述" prop="description" />
           <el-table-column align="center" label="操作">
-            <template>
-              <el-button type="text" @click="addPermission">添加权限</el-button>
+            <template slot-scope="{row}">
+              <el-button type="text" @click="addPermission(2,row.id)">添加权限</el-button>
               <el-button type="text">编辑</el-button>
               <el-button type="text">删除</el-button>
             </template>
@@ -56,8 +56,8 @@
         </el-form>
         <el-row slot="footer" type="flex" justify="center">
           <el-col :span="6">
-            <el-button size="small" type="primary">确定</el-button>
-            <el-button size="small">取消</el-button>
+            <el-button size="small" type="primary" @click="btnOk">确定</el-button>
+            <el-button size="small" @click="btnCancel">取消</el-button>
           </el-col>
         </el-row>
       </el-dialog>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { getPermissionList } from '@/api/permission'
+import { addPermission, getPermissionList } from '@/api/permission'
 import { transListToTreeData } from '@/utils/index'
 export default {
   data() {
@@ -80,7 +80,7 @@ export default {
         description: '', // 描述
         type: '', // 类型 该类型 不需要显示 因为点击添加的时候已经知道类型了
         pid: '', // 因为做的是树 需要知道添加到哪个节点下了
-        enVisible: '0' // 开启
+        enVisible: '' // 开启
       }
     }
   },
@@ -92,8 +92,20 @@ export default {
       const data = await getPermissionList()
       this.permissionList = transListToTreeData(data, '0')
     },
-    addPermission() {
+    async addPermission(type, pid) {
+      this.formData.type = type
+      this.formData.pid = pid
       this.showDialog = true
+    },
+    async btnOk() {
+      const data = await addPermission(this.formData)
+      console.log(data)
+      this.$message.success('权限添加成功')
+      this.showDialog = false
+      this.getPermissionList()
+    },
+    btnCancel() {
+      this.showDialog = false
     }
   }
 }
