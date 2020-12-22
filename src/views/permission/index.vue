@@ -11,7 +11,7 @@
       <!-- 头部工具 -->
       <pageTools>
         <template slot="after">
-          <el-button type="primary" icon="el-icon-plus">新增权限</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="addPermission">新增权限</el-button>
         </template>
       </pageTools>
       <!-- 主要内容 -->
@@ -23,13 +23,44 @@
           <el-table-column align="center" label="描述" prop="description" />
           <el-table-column align="center" label="操作">
             <template>
-              <el-button type="text">添加</el-button>
+              <el-button type="text" @click="addPermission">添加权限</el-button>
               <el-button type="text">编辑</el-button>
               <el-button type="text">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-card>
+      <!-- 弹窗 -->
+      <el-dialog title="权限" :visible.sync="showDialog">
+        <!-- 表单 -->
+        <el-form ref="perForm" label-width="120px">
+          <el-form-item label="权限名称">
+            <el-input v-model="formData.name" style="width:90%" />
+          </el-form-item>
+
+          <el-form-item label="权限标识">
+            <el-input v-model="formData.code" style="width:90%" />
+          </el-form-item>
+
+          <el-form-item label="权限描述">
+            <el-input v-model="formData.description" style="width:90%" />
+          </el-form-item>
+
+          <el-form-item label="激活状态">
+            <el-switch
+              v-model="formData.enVisible"
+              active-value="1"
+              inactive-value="0"
+            />
+          </el-form-item>
+        </el-form>
+        <el-row slot="footer" type="flex" justify="center">
+          <el-col :span="6">
+            <el-button size="small" type="primary">确定</el-button>
+            <el-button size="small">取消</el-button>
+          </el-col>
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -40,8 +71,17 @@ import { transListToTreeData } from '@/utils/index'
 export default {
   data() {
     return {
+      showDialog: false,
       activeIndex: '1',
-      permissionList: []
+      permissionList: [],
+      formData: {
+        name: '', // 名称
+        code: '', // 标识
+        description: '', // 描述
+        type: '', // 类型 该类型 不需要显示 因为点击添加的时候已经知道类型了
+        pid: '', // 因为做的是树 需要知道添加到哪个节点下了
+        enVisible: '0' // 开启
+      }
     }
   },
   created() {
@@ -51,6 +91,9 @@ export default {
     async getPermissionList() {
       const data = await getPermissionList()
       this.permissionList = transListToTreeData(data, '0')
+    },
+    addPermission() {
+      this.showDialog = true
     }
   }
 }
