@@ -23,7 +23,7 @@
           <el-table-column align="center" label="描述" prop="description" />
           <el-table-column align="center" label="操作">
             <template slot-scope="{row}">
-              <el-button type="text" @click="addPermission(2,row.id)">添加权限</el-button>
+              <el-button v-if="row.type === 1" type="text" @click="addPermission(2,row.id)">添加权限</el-button>
               <el-button type="text">编辑</el-button>
               <el-button type="text">删除</el-button>
             </template>
