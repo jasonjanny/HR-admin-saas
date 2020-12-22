@@ -352,7 +352,7 @@ export default {
       this.showPerDialog = false
     },
     perBtnCancel() {
-      this.selectCheck = [],
+      this.selectCheck = []
       this.showPerDialog = false
     }
   }

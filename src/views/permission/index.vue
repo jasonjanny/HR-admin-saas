@@ -10,7 +10,7 @@
       </el-menu>
       <!-- 头部工具 -->
       <pageTools>
-        <template slot="after">
+        <template v-slot:after>
           <el-button type="primary" icon="el-icon-plus" @click="addPermission(1,'0')">新增权限</el-button>
         </template>
       </pageTools>
@@ -105,6 +105,7 @@ export default {
       const data = await getPermissionList()
       this.permissionList = transListToTreeData(data, '0')
     },
+    // 新增权限
     async addPermission(type, pid) {
       this.formData.type = type
       this.formData.pid = pid
