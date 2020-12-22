@@ -34,12 +34,12 @@
     <!-- 弹窗 -->
     <el-dialog :title="title" :visible.sync="showDialog" :destory-on-close="true" @close="btnCancel">
       <!-- 表单 -->
-      <el-form ref="perForm" label-width="120px">
-        <el-form-item label="权限名称">
+      <el-form ref="perForm" label-width="120px" :model="formData" :rules="rules">
+        <el-form-item label="权限名称" prop="name">
           <el-input v-model="formData.name" style="width:90%" />
         </el-form-item>
 
-        <el-form-item label="权限标识">
+        <el-form-item label="权限标识" prop="code">
           <el-input v-model="formData.code" style="width:90%" />
         </el-form-item>
 
@@ -81,6 +81,14 @@ export default {
         type: '', // 类型 该类型 不需要显示 因为点击添加的时候已经知道类型了
         pid: '', // 因为做的是树 需要知道添加到哪个节点下了
         enVisible: '' // 开启
+      },
+      rules: {
+        name: [
+          { required: true, message: '权限名称不能为空', trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '权限标识不能为空', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -117,18 +125,21 @@ export default {
       }
     },
     async btnOk() {
-      // 判断新增或者编辑更新
-      let data
-      if (this.formData.id) {
+      // 全局校验
+      const isValid = this.$refs.perForm.validate()
+      if (isValid) {
+        // 判断新增或者编辑更新
+        if (this.formData.id) {
         // 编辑
-        data = await updatePermission(this.formData)
-      } else {
+          await updatePermission(this.formData)
+        } else {
         // 新增
-        data = await addPermission(this.formData)
+          await addPermission(this.formData)
+        }
+        this.$message.success(this.formData.id ? '权限编辑成功' : '权限添加成功')
+        this.showDialog = false
+        this.getPermissionList()
       }
-      this.$message.success(this.formData.id ? '权限编辑成功' : '权限添加成功')
-      this.showDialog = false
-      this.getPermissionList()
     },
     btnCancel() {
       this.formData = {
