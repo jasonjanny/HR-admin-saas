@@ -156,8 +156,10 @@
           :default-checked-keys="selectCheck"
         />
         <div slot="footer">
-          <el-button @click="perBtnCancel">取消</el-button>
-          <el-button type="primary" @click="perBtnOk">确定</el-button>
+          <el-row type="flex" justify="center">
+            <el-button @click="perBtnCancel">取消</el-button>
+            <el-button type="primary" @click="perBtnOk">确定</el-button>
+          </el-row>
         </div>
       </el-dialog>
     </div>
@@ -347,6 +349,10 @@ export default {
       const data = { id, permIds }
       await assignPerm(data)
       this.$message.success('修改成功')
+      this.showPerDialog = false
+    },
+    perBtnCancel() {
+      this.selectCheck = [],
       this.showPerDialog = false
     }
   }
