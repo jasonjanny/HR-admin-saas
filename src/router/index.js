@@ -85,9 +85,9 @@ const asyncRoutes = [
   departments,
   setting,
   employees,
+  permission,
   approvals,
   attendances,
-  permission,
   salarys,
   social
 ]
