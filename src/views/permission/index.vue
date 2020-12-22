@@ -17,8 +17,8 @@
       <!-- 主要内容 -->
       <el-card>
         <!-- 表格 -->
-        <el-table border :data="permissionList">
-          <el-table-column align="center" label="名称" prop="name" />
+        <el-table border :data="permissionList" row-key="id" :default-expand-all="true">
+          <el-table-column label="名称" prop="name" width="160px" />
           <el-table-column align="center" label="标识" prop="code" />
           <el-table-column align="center" label="描述" prop="description" />
           <el-table-column align="center" label="操作">
