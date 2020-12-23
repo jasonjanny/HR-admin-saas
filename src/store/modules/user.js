@@ -1,6 +1,7 @@
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { setToken, getToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { Message } from 'element-ui'
+import { resetRouter } from '@/router'
 // 状态
 const state = {
   token: getToken(),
@@ -53,6 +54,8 @@ const actions = {
     commit('removeToken')
     // 清理userInfo
     commit('removeUserInfo')
+    // 退出时重置路由权限
+    resetRouter()
   }
 }
 export default {
