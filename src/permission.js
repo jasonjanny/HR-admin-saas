@@ -22,6 +22,8 @@ router.beforeEach(async(to, from, next) => {
         const { roles } = await store.dispatch('user/getUserInfo')
         // 过滤
         const myRoutes = asyncRoutes.filter(item => roles.menus.indexOf(item.name) > -1)
+        // 在所有路由都添加完毕以后，动态添加一个404重定向
+        myRoutes.push({ path: '*', redirect: '/404', hidden: true })
         // 根据用户权限给用户配置路由
         router.addRoutes(myRoutes)
         next(to.path)
