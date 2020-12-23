@@ -45,6 +45,10 @@ for (const key in filters) {
   Vue.filter(filtersName, filtersFunction)
 }
 
+// 注册全局 mixin
+import { checkPermissionMixin } from '@/mixin'
+Vue.mixin(checkPermissionMixin)
+
 Vue.config.productionTip = false
 
 new Vue({
