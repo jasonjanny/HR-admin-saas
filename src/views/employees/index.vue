@@ -22,6 +22,7 @@
           <el-button
             size="small"
             type="danger"
+            :disabled="!checkPermission('POINT-USER-ADD')"
             @click="exportData"
           >导出</el-button>
           <el-button
@@ -158,9 +159,6 @@ export default {
     this.getEmployeesList()
   },
   methods: {
-    checkPermission(pointName) {
-      return this.$store.state.user.userInfo.roles.points.indexOf('pointName') > -1
-    },
     async editRole(userId) {
       this.userId = userId
       await this.$refs.userId.getRoleDetailById(userId)
