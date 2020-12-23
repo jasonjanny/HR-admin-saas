@@ -24,10 +24,13 @@ router.beforeEach(async(to, from, next) => {
         const myRoutes = asyncRoutes.filter(item => roles.menus.indexOf(item.name) > -1)
         // 在所有路由都添加完毕以后，动态添加一个404重定向
         myRoutes.push({ path: '*', redirect: '/404', hidden: true })
-        // 根据用户权限给用户配置路由
+        // 根据用户权限给用户配置路由，动态添加更多的路由规则
         router.addRoutes(myRoutes)
+        // 如果是添加路由, 由于 vue-router 的缺陷
+        // 需要在同一个地址在跳转一次才行
         next(to.path)
       } else {
+      // 如果不是添加路由, 直接放行
         next()
       }
     }

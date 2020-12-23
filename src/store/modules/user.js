@@ -46,6 +46,7 @@ const actions = {
       ...dataUserDetail
     }
     context.commit('setUserInfo', data)
+    return data
   },
   logout({ commit }) {
     // 清理token
