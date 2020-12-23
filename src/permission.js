@@ -5,8 +5,6 @@ import NProgress from 'nprogress'
 // 引入进度条样式
 import 'nprogress/nprogress.css'
 
-import { asyncRoutes } from '@/router'
-
 // 白名单
 const whiteList = ['/login', '/404']
 // 前置守卫
@@ -20,10 +18,8 @@ router.beforeEach(async(to, from, next) => {
       // 如果没有id这个值 才会调用 vuex的获取资料的action
       if (!store.getters.userId) {
         const { roles } = await store.dispatch('user/getUserInfo')
-        // 过滤
-        const myRoutes = asyncRoutes.filter(item => roles.menus.indexOf(item.name) > -1)
-        // 在所有路由都添加完毕以后，动态添加一个404重定向
-        myRoutes.push({ path: '*', redirect: '/404', hidden: true })
+
+        const myRoutes = await store.dispatch('permission/filterRoutes', roles)
         // 根据用户权限给用户配置路由，动态添加更多的路由规则
         router.addRoutes(myRoutes)
         // 如果是添加路由, 由于 vue-router 的缺陷
