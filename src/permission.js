@@ -5,10 +5,12 @@ import NProgress from 'nprogress'
 // 引入进度条样式
 import 'nprogress/nprogress.css'
 
+import { asyncRoutes } from '@/router'
+
 // 白名单
 const whiteList = ['/login', '/404']
 // 前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // 开启进度条
   NProgress.start()
   if (store.getters.token) {
@@ -17,9 +19,15 @@ router.beforeEach((to, from, next) => {
     } else {
       // 如果没有id这个值 才会调用 vuex的获取资料的action
       if (!store.getters.userId) {
-        store.dispatch('user/getUserInfo')
+        const { roles } = await store.dispatch('user/getUserInfo')
+        // 过滤
+        const myRoutes = asyncRoutes.filter(item => roles.menus.indexOf(item.name) > -1)
+        // 根据用户权限给用户配置路由
+        router.addRoutes(myRoutes)
+        next(to.path)
+      } else {
+        next()
       }
-      next()
     }
   } else {
     if (whiteList.indexOf(to.path) > -1) {
