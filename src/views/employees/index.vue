@@ -91,6 +91,7 @@
             <el-button type="text" size="small">离职</el-button>
             <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
             <el-button
+              :disabled="!checkPermission('point-user-delete')"
               type="text"
               size="small"
               @click="delEmployee(row.id)"
@@ -157,6 +158,9 @@ export default {
     this.getEmployeesList()
   },
   methods: {
+    checkPermission(pointName) {
+      return this.$store.state.user.userInfo.roles.points.indexOf('pointName') > -1
+    },
     async editRole(userId) {
       this.userId = userId
       await this.$refs.userId.getRoleDetailById(userId)
