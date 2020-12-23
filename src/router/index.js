@@ -65,6 +65,17 @@ export const constantRoutes = [
       component: () => import('@/views/import'),
       meta: { title: '导入 Excel' }
     }]
+  },
+
+  {
+    path: '/users',
+    component: Layout,
+    hidden: true,
+    children: [{
+      path: '',
+      component: () => import('@/views/users/info.vue'),
+      meta: { title: '用户信息' }
+    }]
   }
 ]
 
