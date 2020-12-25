@@ -8,7 +8,7 @@
             <img v-imageerror="require('@/assets/common/head.jpg')" :src="userInfo.staffPhoto">
           </div>
           <div class="headInfoTip">
-            <p class="firstChild">早安，{{ userInfo.username }}，祝你开心每一天！</p>
+            <p class="firstChild">{{ $t('hello') }}，{{ userInfo.username }}，祝你开心每一天！</p>
             <p class="lastChild">早安，{{ userInfo.username }}，祝你开心每一天！</p>
           </div>
         </div>

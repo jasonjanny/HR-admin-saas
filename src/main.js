@@ -51,9 +51,13 @@ Vue.mixin(checkPermissionMixin)
 
 Vue.config.productionTip = false
 
+// i18n
+import i18n from '@/i18n'
+
 new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: h => h(App)
 })
