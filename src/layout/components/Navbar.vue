@@ -14,6 +14,7 @@
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
+      <ThemePicker class="themepicker" />
       <FullScreen class="fullscreen" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
@@ -43,12 +44,14 @@ import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import FullScreen from '@/components/ScreenFull'
+import ThemePicker from '@/components/ThemePicker'
 
 export default {
   components: {
     // Breadcrumb,
     Hamburger,
-    FullScreen
+    FullScreen,
+    ThemePicker
   },
   data() {
     return {
@@ -110,6 +113,12 @@ export default {
         right: 200px;
         top: 5px;
         color: #fff;
+      }
+
+      .themepicker {
+        position: absolute;
+        top: 16px;
+        right: 148px;
       }
 
     .right-menu-item {
