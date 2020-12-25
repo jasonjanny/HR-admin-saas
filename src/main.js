@@ -17,7 +17,7 @@ import '@/permission' // permission control
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-Vue.use(ElementUI)
+// Vue.use(ElementUI)
 
 // 注册全局组件
 import Component from '@/components'
@@ -53,6 +53,14 @@ Vue.config.productionTip = false
 
 // i18n
 import i18n from '@/i18n'
+// 本来饿了么ui 通过引入语言包, 在配置中设定 locale 来翻译
+// Vue.use(ElementUI, {locale})
+// 我们不想要饿了么自己翻译, 而是想将翻译的工作交给 i18n
+Vue.use(ElementUI, {
+  // i18n 是一个属性, 可以传入一个函数, 自动获取到当前饿了么想要翻译的key
+  // 只需要在这个函数中返回, 对应的文字即可
+  i18n: key => i18n.t(key)
+})
 
 new Vue({
   el: '#app',
